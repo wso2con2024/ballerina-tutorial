@@ -1,0 +1,23 @@
+import ballerina/io;
+
+// decimal : 128 bit decimal floating point
+
+public function main() returns error? {
+
+    // Decimal literals
+    decimal a = 10.0;
+    decimal b = -0.10;
+    decimal c = 10.0d;
+    //              ^  use `d` or `D` suffix to specify a decimal literal.
+
+    // Note: No hex support for decimal literals.
+    io:println("Decimal literals: ", a, ", ", b, ", ", c);
+
+    // Decimal operation and library functions
+    decimal sub = a - b;
+    decimal sum = decimal:sum(a, b);
+    decimal avg = decimal:avg(a, b, c);
+
+    decimal val = check decimal:fromString("10.0");
+    io:println("Decimal value: ", val);
+}
