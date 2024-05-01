@@ -1,7 +1,12 @@
 {
 	"folders": [
 		{
-			"path": "plain_data"
+			"path": "plain_data",
+			"name": "01 Plain Data Examples"
+		}, 
+		{
+			"path": "order_mgt",
+			"name": "02 Order Service"
 		}
 	],
 	"settings": {}

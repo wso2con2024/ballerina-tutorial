@@ -1,0 +1,40 @@
+<item>
+    <details>
+        <name>Sample Item</name>
+        <description>This is a sample item</description>
+    </details>
+    <manufacturer>
+        <code>Sample Code</code>
+        <location>
+            <name>ABC Coperation</name>
+            <city>New York</city>
+            <country>USA</country>
+        </location>
+    </manufacturer>
+    <stock>
+        <quantity>100</quantity>
+        <price currency="USD">19.99</price>
+        <warehouse>
+            <location_id>WH001</location_id>
+            <address>New York, NY, 10001</address>
+        </warehouse>
+    </stock>
+    <tags>
+        <tag>Electronics</tag>
+        <tag>Office</tag>
+    </tags>
+    <reviews>
+        <review>
+            <user_id>12345</user_id>
+            <rating>4</rating>
+            <comment>Very useful product, good value for the money.</comment>
+            <date>2024-03-21</date>
+        </review>
+        <review>
+            <user_id>67890</user_id>
+            <rating>5</rating>
+            <comment>Excellent! Works better than expected.</comment>
+            <date>2024-03-22</date>
+        </review>
+    </reviews>
+</item>
