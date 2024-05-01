@@ -19,12 +19,11 @@ type Customer record {|
 
 type Item record {|
     readonly string itemId;
-    string description;
     string name;
-    decimal price;
+    string manufacturer_code;
+    decimal unit_price;
 	OrderedItem? ordereditem;
 |};
-
 
 type OrderedItem record {|
     readonly string orderedItemId;

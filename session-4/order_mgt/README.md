@@ -4,8 +4,8 @@
 
 - Building a data persistance service, using Ballerina persist tool
 - Expose the service as a RESTful service
-- Demonstrate the JSON and XML data processing capabilities of ballerina.
-- Capabilities of new `ballerina\data.*` modules.  
+- Demonstrate the JSON data processing capabilities of ballerina.
+- Capabilities of new `ballerina\data.jsondata` module.  
 
 ## Step 1
 
