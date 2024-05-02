@@ -54,10 +54,10 @@ service / on httpListener {
             http:BadRequest badRequest = {
                 body: {message: "Invalid request", code: ref}
             };
-            
+
             // Log the incoming request for later analysis
             json|error request = httpReq.getJsonPayload();
-            if (request is error){
+            if (request is error) {
                 log:printError("Failed to parse the request", ref = ref);
                 return badRequest;
             }
@@ -66,8 +66,18 @@ service / on httpListener {
         }
     }
 
-    resource function get orders(string id) returns json|error {
+    resource function get orders(string id) returns OrderResponse?|error {
+        do {
+            // Get the order from the db
+            GetOrder data = check dbClient->/orders/[id]();
 
+            // This works fine. But not above
+            GetOrderedItem odd = check dbClient->/ordereditems/[id]();
+
+            // Transform the db entity to the response
+        } on fail error err {
+
+        }
     }
 }
 
@@ -84,3 +94,4 @@ function transformSimpleItemRequest(SimpleItemRequest simpleItemRequest) returns
     manufacturer_code: simpleItemRequest.manufacturer.code,
     unit_price: simpleItemRequest.stock.price.amount / simpleItemRequest.stock.quantity
 };
+
