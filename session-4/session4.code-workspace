@@ -7,6 +7,14 @@
 		{
 			"path": "order_mgt",
 			"name": "02 Order Service"
+		},
+		{
+			"path" : "edi",
+			"name" : "04 EDI Tool Demo"
+		},
+		{
+			"path" : "java_interop",
+			"name" : "05 Java Interop"
 		}
 	],
 	"settings": {}
