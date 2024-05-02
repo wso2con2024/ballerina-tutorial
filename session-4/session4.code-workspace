@@ -9,6 +9,10 @@
 			"name": "02 Order Service"
 		},
 		{
+			"path": "order_mgt_xml",
+			"name": "03 XML Order Service "
+		},
+		{
 			"path" : "edi",
 			"name" : "04 EDI Tool Demo"
 		},

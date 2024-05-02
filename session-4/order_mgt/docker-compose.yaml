@@ -17,5 +17,5 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - "../generated/db/script.sql:/docker-entrypoint-initdb.d/1.sql"
-      - "./data-seeds.sql:/docker-entrypoint-initdb.d/2.sql"
+      - "./generated/db/script.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./_samples/db/data-seeds.sql:/docker-entrypoint-initdb.d/2.sql"
