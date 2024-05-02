@@ -1,4 +1,4 @@
-Utilizing Ballerina for Cloud Native Integrations
+# Utilizing Ballerina for Cloud Native Integrations
 
 <h1 align="center">
   <center><img height="100" width="300" src="https://ballerina.io/images/logo/ballerina-logo-grey.svg" alt="Ballerina Logo"/></center>
