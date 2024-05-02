@@ -1,5 +1,9 @@
 # WSO2Con2024 - Ballerina Tutorial - Utilizing Ballerina for Cloud Native Integrations
 
+<h1 align="center">
+  <center><img height="100" width="300" src="https://ballerina.io/images/logo/ballerina-logo-grey.svg" alt="Ballerina Logo"/></center>
+</h1>
+
 ## Overview 
 
 In today's fast-paced technological landscape, agility and rapid software delivery have become standard expectations. Ballerina, a cloud-native integration technology, empowers developers to independently develop, deploy, maintain, and scale applications, thereby elevating application integration to a new level. 
