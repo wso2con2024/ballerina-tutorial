@@ -41,7 +41,7 @@ service / on httpListener {
         do {
             SimpleItemRequest request = check jsondata:parseStream(check httpReq.getByteStream());
             // Transform the request to a item db entity
-            db:ItemInsert item = transformSimpleItemRequest(request);
+            db:ItemInsert item = transformItemRequest(request);
 
             // Insert the item to the db
             string[] result = check dbClient->/items.post([item]);
@@ -66,17 +66,26 @@ service / on httpListener {
         }
     }
 
-    resource function get orders(string id) returns OrderResponse?|error {
+    resource function get orders(string id) returns OrderResponse|http:NotFound {
+        string ref = uuid:createType1AsString();
         do {
             // Get the order from the db
-            GetOrder data = check dbClient->/orders/[id]();
+            OrderWithRelations data = check dbClient->/orders/[id]();
 
-            // This works fine. But not above
-            GetOrderedItem odd = check dbClient->/ordereditems/[id]();
+            GetOrderedItemWithRelations[] list = from var item in data.items
+                let GetOrderedItemWithRelations itemData = check dbClient->/ordereditems/[item.orderedItemId]()
+                select itemData;
 
             // Transform the db entity to the response
+            return transform(data, list);
         } on fail error err {
-
+            // Error handling
+            http:NotFound notFound = {
+                body: {message: "Order not found", code: id}
+            };
+            // Log the incoming request for later analysis
+            log:printError("Get Order Error", err, code = ref, id = id);
+            return notFound;
         }
     }
 }
@@ -88,10 +97,24 @@ function transformItemRequest(AddItemRequest itemRequest) returns db:ItemInsert 
     unit_price: itemRequest.stock.price.amount / itemRequest.stock.quantity
 };
 
-function transformSimpleItemRequest(SimpleItemRequest simpleItemRequest) returns db:ItemInsert => {
-    itemId: simpleItemRequest.item_details.sku,
-    name: simpleItemRequest.item_details.name,
-    manufacturer_code: simpleItemRequest.manufacturer.code,
-    unit_price: simpleItemRequest.stock.price.amount / simpleItemRequest.stock.quantity
-};
-
+function transform(OrderWithRelations ord, GetOrderedItemWithRelations[] items) returns OrderResponse => let var prices = (from GetOrderedItemWithRelations item in items
+        let decimal value = <decimal>item.quantity * item.item.unit_price
+        select value), var total = decimal:sum(...prices)
+    in {
+        id: ord.orderID,
+        customer: {
+            id: ord.customer.customerID,
+            name: ord.customer.firstName + " " + ord.customer.lastName,
+            email: ord.customer.email,
+            loyalty: ord.customer.premiumCustomer.toString(),
+            optedInNewsLetter: ord.customer.optInEmail.toString()
+        },
+        items: from var itemsItem in items
+            select {
+                id: itemsItem.item.itemId,
+                name: itemsItem.item.name,
+                quantity: itemsItem.quantity,
+                price: itemsItem.item.unit_price + <decimal>itemsItem.quantity
+            },
+        total: total
+    };

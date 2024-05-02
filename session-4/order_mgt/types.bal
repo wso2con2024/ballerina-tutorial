@@ -5,53 +5,29 @@ type AddItemResponse record {|
     string message?;
 |};
 
-// These types are generated from `_samples/post_item_request.json`
+// These types are generated from `_samples/post_item_request.json`. Removed unnecessary fields.
 type Item_details record {
     string sku;
     string name;
-    string description;
-};
-
-type Location record {
-    string city;
-    string country;
 };
 
 type Manufacturer record {
-    string name;
-    Location location;
     string code;
 };
 
 type Price record {
-    string currency;
     decimal amount;
-};
-
-type Warehouse record {
-    string location_id;
-    string address;
 };
 
 type Stock record {
     int quantity;
     Price price;
-    Warehouse warehouse;
-};
-
-type ReviewsItem record {
-    int user_id;
-    int rating;
-    string comment;
-    string date;
 };
 
 type AddItemRequest record {
     Item_details item_details;
     Manufacturer manufacturer;
     Stock stock;
-    string[] tags;
-    ReviewsItem[] reviews;
 };
 
 // Simple Data Model
@@ -82,11 +58,13 @@ type SimplePrice record {|
 
 // Order Data Model
 
-type GetOrder record {|
+type OrderWithRelations record {|
     string orderID;
     string date;
     GetCustomer customer;
-    GetOrderedItem[] items;
+    record{|
+        string orderedItemId;
+    |}[] items;
 |};
 
 type GetCustomer record {|
@@ -98,10 +76,9 @@ type GetCustomer record {|
     boolean premiumCustomer;
 |};
 
-type GetOrderedItem record {|
+type GetOrderedItemWithRelations record {|
     float quantity;
-    GetItem item; // Problematic field
-    // string itemItemId;
+    GetItem item;
 |};
 
 type GetItem record {|
@@ -123,7 +100,7 @@ type Customer record {
 type ItemsItem record {
     string id;
     string name;
-    int quantity;
+    float quantity;
     decimal price;
 };
 

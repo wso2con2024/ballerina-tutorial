@@ -13,7 +13,7 @@
         "code": "MFG-ABC"
     },
     "stock": {
-        "quantity": 100,
+        "quantity": 10.0,
         "price": {
             "currency": "USD",
             "amount": 1999.90
