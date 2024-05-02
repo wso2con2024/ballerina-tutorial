@@ -6,7 +6,7 @@
 
 ## Overview 
 
-In today's fast-paced technological landscape, agility and rapid software delivery have become standard expectations. Ballerina, a cloud-native integration technology, empowers developers to independently develop, deploy, maintain, and scale applications, thereby elevating application integration to a new level. 
+In today's fast-paced technological landscape, agility and rapid software delivery have become standard expectations. [Ballerina](https://ballerina.io/), a cloud-native integration technology, empowers developers to independently develop, deploy, maintain, and scale applications, thereby elevating application integration to a new level. 
 
 This tutorial offers a hands-on Ballerina way of achieving this by providing participants with practical insights into effectively leveraging this technology.
 
