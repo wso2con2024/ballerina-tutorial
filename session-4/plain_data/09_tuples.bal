@@ -1,5 +1,7 @@
 import ballerina/io;
 
+// Tuples are list, but members are defined separately for each index
+
 public function main() returns error? {
 
     [int, string, string, boolean] person = [1, "John", "Doe", true];
@@ -30,3 +32,11 @@ public function main() returns error? {
     int[] scores2 = check scores.cloneWithType();
     io:println("Scores2: ", scores2);
 }
+
+// Open vs Closed Arrays and Tuples
+
+type OpenArray int[];
+type OpenTuple [int...];
+
+type ClosedArray int[3];
+type ClosedTuple [int, int, int];

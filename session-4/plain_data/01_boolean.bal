@@ -1,6 +1,4 @@
-import ballerina/lang.'boolean as bool;
-
-// boolean represents boolean true or false values
+// Two value - boolean `true` and `false` values
 
 public function main() returns error? {
 
@@ -15,5 +13,6 @@ public function main() returns error? {
     // Boolean Library Functions
     boolean every = boolean:every(open, close);
     //             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Lang Library Function
-    boolean val = check bool:fromString("true");
+    
+    boolean val = check boolean:fromString("true");
 }

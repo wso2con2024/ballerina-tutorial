@@ -1,15 +1,23 @@
 import ballerina/io;
+import ballerina/lang.array;
+
+// Lists are ordered collections of memebrs. Access to members is by index.
+// Arrays all members to be of the same type
 
 public function main() {
 
+    // List Constructor Literal
     int[] numbers = [1, 2, 3, 4, 5];
 
+    // Member access
     int num1 = numbers[2];
     io:println("num1: ", num1); // 3
 
+    // Update Memember
     numbers[2] = 10;
     io:println("Updated numbers: ", numbers);
 
+    // Arrays are unbounded by default. They grow as needed using filler values.
     numbers[9] = 20;
     io:println("Updated numbers: ", numbers);
 
@@ -26,6 +34,8 @@ public function main() {
 
     int[] pow2 = numbers.filter(n => n % 2 == 0).map(n => n * n);
     io:println("Pow2: ", pow2);
+
+    int[] sortedList = array:sort(numbers);
 
     // Stack and Queue operations
     string[] stack = [];
