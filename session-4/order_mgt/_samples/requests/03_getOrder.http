@@ -1,0 +1,2 @@
+### Get all appointments for doctor 01 on 2023-07-01
+GET http://localhost:9090/orders/ORD001

@@ -1,4 +1,5 @@
 import ballerina/persist as _;
+import ballerinax/persist.sql;
 
 type Order record {|
     readonly string orderID;
@@ -21,13 +22,22 @@ type Item record {|
     readonly string itemId;
     string name;
     string manufacturer_code;
+    @sql:Decimal {precision: [10,2]}
     decimal unit_price;
-	OrderedItem? ordereditem;
+    OrderedItem[] ordereditems;
 |};
 
 type OrderedItem record {|
-    readonly string orderedItemId;
+    readonly string orderID;
+    readonly string itemId;
+    @sql:Decimal {precision: [10,2]}
     decimal quantity;
+    @sql:Relation {
+        keys: ["orderID"]
+    }
     Order 'order;
+    @sql:Relation {
+        keys: ["itemId"]
+    }
     Item item;
 |};

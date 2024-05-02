@@ -22,20 +22,15 @@ INSERT INTO `Order` (`orderID`, `date`, `customerCustomerID`) VALUES
 ('ORD004', '2024-03-24', 'CUST004'),
 ('ORD005', '2024-03-25', 'CUST005');
 
--- Inserting data into the OrderedItem table with float quantities
-INSERT INTO `OrderedItem` (`orderedItemId`, `quantity`, `orderOrderID`, `itemItemId`) VALUES
-('OI001', 2.0, 'ORD001', 'ITEM001'),
-('OI002', 1.5, 'ORD001', 'ITEM002'),
-('OI003', 3.0, 'ORD002', 'ITEM002'),
-('OI004', 2.5, 'ORD002', 'ITEM003'),
-('OI005', 1.0, 'ORD003', 'ITEM003'),
-('OI006', 4.25, 'ORD003', 'ITEM004'),
-('OI007', 1.75, 'ORD004', 'ITEM004'),
-('OI008', 2.0, 'ORD004', 'ITEM005'),
-('OI009', 3.5, 'ORD005', 'ITEM005'),
-('OI010', 2.0, 'ORD005', 'ITEM001'),
-('OI011', 1.0, 'ORD001', 'ITEM003'),
-('OI012', 1.5, 'ORD002', 'ITEM001'),
-('OI013', 2.0, 'ORD003', 'ITEM002'),
-('OI014', 2.5, 'ORD004', 'ITEM001'),
-('OI015', 2.0, 'ORD005', 'ITEM004');
+-- Inserting data into the OrderedItem table
+INSERT INTO `OrderedItem` (`quantity`, `orderID`, `itemId`) VALUES
+(2.0, 'ORD001', 'ITEM001'),
+(1.5, 'ORD001', 'ITEM002'),
+(3.0, 'ORD002', 'ITEM002'),
+(2.5, 'ORD002', 'ITEM003'),
+(1.0, 'ORD003', 'ITEM003'),
+(4.25, 'ORD003', 'ITEM004'),
+(1.75, 'ORD004', 'ITEM004'),
+(2.0, 'ORD004', 'ITEM005'),
+(3.5, 'ORD005', 'ITEM005'),
+(2.0, 'ORD005', 'ITEM001');

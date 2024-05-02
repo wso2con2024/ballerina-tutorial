@@ -1,4 +1,4 @@
-// import ballerina/constraint;
+import ballerina/constraint;
 
 type AddItemResponse record {|
     string code;
@@ -7,6 +7,9 @@ type AddItemResponse record {|
 
 // These types are generated from `_samples/post_item_request.json`. Removed unnecessary fields.
 type Item_details record {
+    @constraint:String {
+        minLength: 2
+    }
     string sku;
     string name;
 };
@@ -63,7 +66,7 @@ type OrderWithRelations record {|
     string date;
     GetCustomer customer;
     record{|
-        string orderedItemId;
+        string itemId;
     |}[] items;
 |};
 

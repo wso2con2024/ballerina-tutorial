@@ -30,7 +30,7 @@ service / on httpListener {
                 body: {message: "Invalid request", code: ref}
             };
             // Log the incoming request for later analysis
-            log:printError("Add Item Error", err, code = ref, item = request);
+            log:printError("Add Item Error", err, code = ref);
             return badRequest;
         }
     }
@@ -54,26 +54,19 @@ service / on httpListener {
             http:BadRequest badRequest = {
                 body: {message: "Invalid request", code: ref}
             };
-
-            // Log the incoming request for later analysis
-            json|error request = httpReq.getJsonPayload();
-            if (request is error) {
-                log:printError("Failed to parse the request", ref = ref);
-                return badRequest;
-            }
-            log:printError("Add Item Error", err, code = ref, item = request);
+            log:printError("Add Item Error", err, code = ref);
             return badRequest;
         }
     }
 
-    resource function get orders(string id) returns OrderResponse|http:NotFound {
+    resource function get orders/[string id]() returns OrderResponse|http:NotFound {
         string ref = uuid:createType1AsString();
         do {
             // Get the order from the db
             OrderWithRelations data = check dbClient->/orders/[id]();
 
             GetOrderedItemWithRelations[] list = from var item in data.items
-                let GetOrderedItemWithRelations itemData = check dbClient->/ordereditems/[item.orderedItemId]()
+                let GetOrderedItemWithRelations itemData = check dbClient->/ordereditems/[data.orderID]/[item.itemId]()
                 select itemData;
 
             // Transform the db entity to the response
@@ -99,7 +92,7 @@ function transformItemRequest(AddItemRequest itemRequest) returns db:ItemInsert 
 
 function transform(OrderWithRelations ord, GetOrderedItemWithRelations[] items) returns OrderResponse => let var prices = (from GetOrderedItemWithRelations item in items
         let decimal value = <decimal>item.quantity * item.item.unit_price
-        select value), var total = decimal:sum(...prices)
+        select value), var total = decimal:sum(...prices).round(2)
     in {
         id: ord.orderID,
         customer: {

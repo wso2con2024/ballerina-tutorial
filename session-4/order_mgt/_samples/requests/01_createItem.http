@@ -1,0 +1,97 @@
+### Create an item
+POST http://localhost:9090/item/
+Content-Type: application/json
+
+{
+    "item_details": {
+        "sku": "SMP-001",
+        "name": "Sample Item",
+        "description": "This is a sample item"
+    },
+    "manufacturer": {
+        "name": "ABC Corporation",
+        "location": {
+            "city": "New York",
+            "country": "USA"
+        },
+        "code": "MFG-ABC"
+    },
+    "stock": {
+        "quantity": 10.0,
+        "price": {
+            "currency": "USD",
+            "amount": 1999.90
+        },
+        "warehouse": {
+            "location_id": "WH001",
+            "address": "New York, NY, 10001"
+        }
+    },
+    "tags": [
+        "Electronics",
+        "Office"
+    ],
+    "reviews": [
+        {
+            "user_id": 12345,
+            "rating": 4,
+            "comment": "Very useful product, good value for the money.",
+            "date": "2024-03-21"
+        },
+        {
+            "user_id": 67890,
+            "rating": 5,
+            "comment": "Excellent! Works better than expected.",
+            "date": "2024-03-22"
+        }
+    ]
+}
+
+### Send an invalid item
+POST http://localhost:9090/item/
+Content-Type: application/json
+
+{
+    "item_details": {
+        "sku": "S",
+        "name": "Sample Item",
+        "description": "This is a sample item"
+    },
+    "manufacturer": {
+        "name": "ABC Corporation",
+        "location": {
+            "city": "New York",
+            "country": "USA"
+        },
+        "code": "MFG-ABC"
+    },
+    "stock": {
+        "quantity": 10.0,
+        "price": {
+            "currency": "USD",
+            "amount": 1999.90
+        },
+        "warehouse": {
+            "location_id": "WH001",
+            "address": "New York, NY, 10001"
+        }
+    },
+    "tags": [
+        "Electronics",
+        "Office"
+    ],
+    "reviews": [
+        {
+            "user_id": 12345,
+            "rating": 4,
+            "comment": "Very useful product, good value for the money.",
+            "date": "2024-03-21"
+        },
+        {
+            "user_id": 67890,
+            "rating": 5,
+            "comment": "Excellent! Works better than expected.",
+            "date": "2024-03-22"
+        }
+    ]
+}
