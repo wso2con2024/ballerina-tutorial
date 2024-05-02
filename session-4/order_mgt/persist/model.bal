@@ -27,7 +27,7 @@ type Item record {|
 
 type OrderedItem record {|
     readonly string orderedItemId;
-    float quantity;
+    decimal quantity;
     Order 'order;
     Item item;
 |};

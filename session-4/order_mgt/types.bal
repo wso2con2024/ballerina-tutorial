@@ -20,7 +20,7 @@ type Price record {
 };
 
 type Stock record {
-    int quantity;
+    decimal quantity;
     Price price;
 };
 
@@ -48,7 +48,7 @@ type SimpleManufacturer record {|
 |};
 
 type SimpleStock record {|
-    int quantity;
+    decimal quantity;
     SimplePrice price;
 |};
 
@@ -77,7 +77,7 @@ type GetCustomer record {|
 |};
 
 type GetOrderedItemWithRelations record {|
-    float quantity;
+    decimal quantity;
     GetItem item;
 |};
 
@@ -100,7 +100,7 @@ type Customer record {
 type ItemsItem record {
     string id;
     string name;
-    float quantity;
+    decimal quantity;
     decimal price;
 };
 
