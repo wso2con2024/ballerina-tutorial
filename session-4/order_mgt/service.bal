@@ -11,7 +11,7 @@ final isolated db:Client dbClient = check new ();
 
 service / on httpListener {
 
-    resource function post item(AddItemRequest request) returns AddItemResponse|http:BadRequest {
+    resource function post item(ItemRequest request) returns ItemResponse|http:BadRequest {
         // Simple error handling technique.
         string ref = uuid:createType1AsString();
         do {
@@ -35,7 +35,7 @@ service / on httpListener {
         }
     }
 
-    resource function post itemSimple(http:Request httpReq) returns AddItemResponse|http:BadRequest {
+    resource function post itemSimple(http:Request httpReq) returns ItemResponse|http:BadRequest {
         // Simple error handling technique.
         string ref = uuid:createType1AsString();
         do {
@@ -83,7 +83,7 @@ service / on httpListener {
     }
 }
 
-function transformItemRequest(AddItemRequest itemRequest) returns db:ItemInsert => {
+function transformItemRequest(ItemRequest itemRequest) returns db:ItemInsert => {
     itemId: itemRequest.item_details.sku,
     name: itemRequest.item_details.name,
     manufacturer_code: itemRequest.manufacturer.code,

@@ -4,7 +4,8 @@ target/
 
 # Ballerina maintains the compiler-generated source code here.
 # Remove this if you want to commit generated sources.
-generated/
+# ! Waring: Demonstration purposes only. 
+!generated/
 
 # ! Waring: This is a sensitive file. Do not commit this file if you are using it to store sensitive information.
 # Demonstration purposes only.

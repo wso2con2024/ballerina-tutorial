@@ -2,7 +2,7 @@ version : '3'
 services:
   mysql:
     image: mysql:8-oracle
-    container_name: hospitaldb
+    container_name: orderMgt
     command: --default-authentication-plugin=caching_sha2_password
     environment:
       - MYSQL_ROOT_PASSWORD=root1234

@@ -1,11 +1,12 @@
 import ballerina/constraint;
 
-type AddItemResponse record {|
+type ItemResponse record {|
     string code;
     string message?;
 |};
 
-// These types are generated from `_samples/post_item_request.json`. Removed unnecessary fields.
+// These types are generated from `_samples/post_item_request.json`. 
+// Remove unnecessary fields.
 type Item_details record {
     @constraint:String {
         minLength: 2
@@ -27,7 +28,7 @@ type Stock record {
     Price price;
 };
 
-type AddItemRequest record {
+type ItemRequest record {
     Item_details item_details;
     Manufacturer manufacturer;
     Stock stock;
