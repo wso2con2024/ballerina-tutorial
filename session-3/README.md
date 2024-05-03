@@ -50,3 +50,21 @@ These areas will be covered via an implementation of a GraphQL backend in Baller
 - Consists of the GraphQL service implementation to retrieve `places` with additional city information, with records as output object types.
 
 - But records, may not always be ideal if additional work is done to resolve fields, since it will be unnecessary if such a field is not requested. Similarly, records aren't ideal when there are relationships between objects and each object needs to be accessible via the other (e.g., review via place and place via review). For level 2, we will change record output type to an object output type.
+
+#### Level 2 - Object as output type
+
+- Branch - https://github.com/wso2con2024/ballerina-tutorial/tree/session-3-level-2
+
+- Consists of the GraphQL service implementation to retrieve `places` with additional city information, but with Ballerina service objects as output object types.
+
+    This change ensures additional work is done if and only when requested.
+    
+    > Note: even with this approach, the remote method call for a city is repeated when both the population and the time zone are requested. Similarly, the calls are repeated when there are multiple places in the same city. Ballerina supports data loaders to avoid this - incorporated in Level 8.
+
+- Demonstrates how types that include nil translate to allowing partial data to be returned even when a particular field cannot be resolved.
+
+- For level 3, let's 
+
+    i. introduce the rest of the output objects - `Author` and `Review`
+
+    ii. introduce a query that accepts arguments (`place` to retrieve place data for a given place ID)

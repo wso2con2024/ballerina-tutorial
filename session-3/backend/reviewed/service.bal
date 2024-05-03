@@ -10,63 +10,11 @@ final http:Client geoClient = check new ("https://public.opendatasoft.com/api/ex
 }
 service /reviewed on new graphql:Listener(9000) {
 
-    resource function get places() returns Place[]|error {
+    resource function get places() returns Place[] {
         return from PlaceData placeData in places
-            let string city = placeData.city,
-                string country = placeData.country,
-                // But this will happen even when population or timezone are not requested.
-                CityDataResultsItem cityData = check getCityData(city, country)
-            select {
-                id: placeData.id,
-                name: placeData.name,
-                city,
-                country,
-                population: cityData.population,
-                timezone: cityData.timezone
-            };
+            select new Place(placeData.id);
     }
-
-    // If the fields were only id, name, city, and country, since `Place` is 
-    // an open record, can directly return `places` with a table as the 
-    // return type. 
-    // resource function get places() returns table<Place> {
-    //     return places;
-    // }
 }
-
-type Place record {
-    int id;
-    string name;
-    string city;
-    string country;
-    int population;
-    string timezone;
-};
-
-// Records aren't ideal when we want to incorporate reviews and authors though.
-// Need a `Place` to create a `Review`, can do using optional fields and/or by creating 
-// the place with an empty review array first and then updating the reviews, but not ideal.
-
-// type Place record {
-//     int id;
-//     string name;
-//     string city;
-//     string country;
-//     Review[] reviews;
-// };
-
-// type Review record {
-//     int id;
-//     Place place;
-//     Author author;
-//     string content;
-//     int rating;
-// };
-
-// type Author record {
-//     int id;
-//     string username;
-// };
 
 type CityDataResultsItem record {
     int population;
@@ -87,4 +35,47 @@ function getCityData(string city, string country) returns CityDataResultsItem|er
         return error(string `cannot find data for ${city}, ${country}`);
     }
     return cityData.results[0];
+}
+
+service class Place {
+    final int id;
+    final string name;
+    final string city;
+    final string country;
+
+    function init(@graphql:ID int id) {
+        PlaceData placeData = places.get(id);
+        self.id = id;
+        self.name = placeData.name;
+        self.city = placeData.city;
+        self.country = placeData.country;
+    }
+
+    resource function get id() returns @graphql:ID int => self.id;
+
+    resource function get name() returns string => self.name;
+
+    resource function get city() returns string => self.city;
+
+    resource function get country() returns string => self.country;
+
+    // Has nil in the return type, only this field will become null if 
+    // this resolver resource method returns error.
+    resource function get population() returns int|error? {
+        CityDataResultsItem cityData = check getCityData(self.city, self.country);
+        return cityData.population;
+    }
+
+    // Does not have nil in the return type, therefore, the entire data retrieval
+    // will just return null when this resolver resource method returns error.
+    resource function get timezone() returns string|error {
+        CityDataResultsItem cityData = check getCityData(self.city, self.country);
+        return cityData.timezone;
+    }
+
+    resource function get rating() returns decimal? {
+        return from ReviewData {placeId, rating} in reviews
+            where placeId == self.id
+            collect avg(rating);
+    }
 }

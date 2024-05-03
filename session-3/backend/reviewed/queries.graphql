@@ -1,19 +1,23 @@
-query QueryPlacesWithoutCityDetails {
+# Get back partial data by making fields for which resolving can fail nilable.
+# For the erroneous country name ("US" instead of "United States")
+# 1. when `timezone` is not requested we still get partial data
+query ErroneousNilableFieldQuery {
   places {
     id
     name
     city
     country
+    population
   }
 }
 
-query QueryPlacesWithCityDetails {
+# 2. but when `timezone` is requested we don't get any data
+query ErroneousNonNilableFieldQuery {
   places {
     id
     name
     city
     country
     timezone
-    population
   }
 }
