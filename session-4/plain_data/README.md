@@ -2,6 +2,8 @@
 
 This sessions is dedicated to exploring how Ballerina supports Data-Oriented Programming (DOP) through its handling of plain data. Each provided example demonstrates the fundamental data types and structures in Ballerina, showcasing why it is an effective language for DOP.
 
+![Ballerina Values](PlainData.png)
+
 ## Contents
 
 Each file in this repository corresponds to a specific aspect of Ballerina's data handling capabilities. Below are brief descriptions of what each file covers:
