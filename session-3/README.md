@@ -370,3 +370,28 @@ Now that we have the core implementation done, we can work on incorporating a fe
 
 - Once the set up is done, you can send a few requests and "observe" the metrics and traces.
 
+#### Main branch
+
+Note that the following changes have been introduced from https://github.com/wso2con2024/ballerina-tutorial/tree/session-3-level-10 to the `main` branch, which is used with the frontend implementation for demonstration.
+
+- Observability has been disabled in the Ballerina.toml file by setting `observabilityIncluded` to `false`. The `metricsEnabled` and `tracingEnabled` configurable variables of `ballerina.observe` have been set to `false` in the Config.toml file (if the same file is used).
+
+    If required to run with observability, simply undo these changes.
+
+- The `secureSocket` (SSL) configuration has been removed to avoid the warning due to the self-signed certificate used for demonstration. Tests have been updated accordingly.
+
+    If you need to try the sample out with SSL enabled, undo this change and update the [.env](./frontend/.env) file to use the `https` and `wss` URLs in the frontend.
+
+- Make sure the Config.toml file consists of the configurable variables for the database configuration. If you need to enable GraphiQL and/or introspection, enable them by setting `graphiqlEnabled` and `introspection` to `true`. 
+
+    ```toml
+    graphiqlEnabled = true
+    introspection = true
+
+    [reviewed.db]
+    host = "localhost"
+    port = 3306
+    user = <DB_USER>
+    password = <DB_PASS>
+    database = "reviewed_db"
+    ```

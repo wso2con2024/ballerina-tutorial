@@ -3,11 +3,7 @@ import ballerina/test;
 
 import maryamzi/city_data_client;
 
-final graphql:Client cl = check new ("https://localhost:9000/reviewed",
-    secureSocket = {
-        cert: "../resources/certs/public.crt"
-    }
-);
+final graphql:Client cl = check new ("http://localhost:9000/reviewed");
 
 @test:Mock {
     functionName: "getGeoClient"

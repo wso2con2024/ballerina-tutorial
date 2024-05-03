@@ -37,13 +37,7 @@ final db:Client db = check new;
 
 final pubsub:PubSub subscriptions = new;
 
-listener graphql:Listener ln = new (9000,
-        secureSocket = {
-            key: {
-                certFile: "../resources/certs/public.crt",
-                keyFile: "../resources/certs/private.key"
-            }
-        });
+listener graphql:Listener ln = new (9000);
 
 @graphql:ServiceConfig {
     graphiql: {
