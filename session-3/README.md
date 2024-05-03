@@ -288,3 +288,85 @@ Now that we have the core implementation done, we can work on incorporating a fe
     visibility = "private"
     ```
 
+#### Level 10 - Observability
+
+- Branch - https://github.com/wso2con2024/ballerina-tutorial/tree/session-3-level-10
+
+- Introduces Prometheus and Grafana for metrics and monitoring and introduces Jaegar for tracing.
+
+    Note: Distributed logging can be configured as described in [Observe logs](https://ballerina.io/learn/observe-logs/). While the current implementation only has a few logs, you can add more logs using the `ballerina/log` module similarly, as appropriate.
+
+- Set up
+
+    - If observability is not enabled already, enable it by setting `observabilityIncluded` (under `[build-options]`) to true in the Ballerina.toml file.
+
+    - Import the `ballerinax/prometheus` and `ballerinax/jaeger` modules in the source code. Use `as _` to get rid of the compile-time errors for unused modules, since we are only importing them for what these modules do, rather than to access symbols from these modules.
+
+        ```ballerina
+        import ballerinax/jaeger as _;
+        import ballerinax/prometheus as _;
+        ```
+
+    - Enable metrics and tracing by adding the following entries in the Config.toml file.
+
+        ```toml
+        [ballerina.observe]
+        metricsEnabled = true
+        metricsReporter = "prometheus"
+        tracingEnabled = true
+        tracingProvider = "jaeger"
+        ```
+
+    - Starting up [Prometheus](https://prometheus.io/docs/prometheus/latest/installation/).
+
+        i. Add the following in a .yml (e.g., prometheus.yml) file.
+
+        ```yml
+        global:
+        scrape_interval:     15s
+        evaluation_interval: 15s
+
+        scrape_configs:
+        - job_name: 'prometheus'
+            static_configs:
+            - targets: ['localhost:9797']
+        ```
+
+        ii. Start the Prometheus server providing the path to this file as the `--config.file` option.
+
+        ```bash
+        $ ./prometheus --config.file=<PATH_TO_PROMETHEUS_YML_FILE>/prometheus.yml
+        ```
+
+        *Note: Alternatively, follow [Set up Prometheus](https://ballerina.io/learn/observe-metrics/#set-up-prometheus) to run Prometheus on Docker.*
+
+        iii. Navigate to [http://localhost:9090/](http://localhost:9090/)
+
+    - Starting up [Grafana](https://grafana.com/grafana/download?edition=oss).
+
+        i. Start up Grafana and follow the instructions in [Set up Grafana](https://ballerina.io/learn/observe-metrics/#set-up-grafana) to configure Grafana against the Prometheus data source.
+
+        *Note: Alternatively, follow [Set up Grafana](https://ballerina.io/learn/observe-metrics/#set-up-grafana) to run Grafana on Docker.*
+
+        ii. Navigate to [http://localhost:3000/](http://localhost:3000/)
+
+    - Starting up [Jaegar](https://www.jaegertracing.io/download/).
+
+        i. Add the following in the Config.toml file.
+
+        ```toml
+        [ballerinax.jaeger]
+        agentHostname = "localhost"
+        agentPort = 4317
+        samplerType = "const"
+        samplerParam = 1.0
+        reporterFlushInterval = 2000
+        reporterBufferSize = 1000
+        ```
+
+        ii. Start up Jaegar and navigate to [http://localhost:16686](http://localhost:16686).
+
+        *Note: Alternatively, follow [Set up Grafana](https://ballerina.io/learn/observe-metrics/#set-up-grafana) to run Grafana on Docker.*
+
+- Once the set up is done, you can send a few requests and "observe" the metrics and traces.
+

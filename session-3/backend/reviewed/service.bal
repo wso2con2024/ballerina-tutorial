@@ -6,6 +6,9 @@ import ballerina/graphql.dataloader;
 import ballerina/http;
 import ballerina/log;
 
+import ballerinax/jaeger as _;
+import ballerinax/prometheus as _;
+
 import xlibb/pubsub;
 
 import maryamzi/city_data_client;
