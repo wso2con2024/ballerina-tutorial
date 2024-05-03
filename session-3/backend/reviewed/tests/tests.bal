@@ -1,6 +1,7 @@
 import ballerina/graphql;
-import ballerina/http;
 import ballerina/test;
+
+import maryamzi/city_data_client;
 
 final graphql:Client cl = check new ("https://localhost:9000/reviewed",
     secureSocket = {
@@ -11,7 +12,7 @@ final graphql:Client cl = check new ("https://localhost:9000/reviewed",
 @test:Mock {
     functionName: "getGeoClient"
 }
-function getMockClient() returns http:Client => test:mock(http:Client);
+function getMockClient() returns city_data_client:Client => test:mock(city_data_client:Client);
 
 @test:Config
 function testRetrievingBasicPlaceData() returns error? {
@@ -25,8 +26,8 @@ function testRetrievingBasicPlaceData() returns error? {
     }`);
 
     BasicPlaceData[] expected = check from BasicPlaceData cityData in db->/places(BasicPlaceData)
-                                    order by cityData.name
-                                    select cityData;
+        order by cityData.name
+        select cityData;
     test:assertEquals(actual, {"data": {"places": expected}});
 }
 
@@ -48,19 +49,33 @@ type CityDataWithPopulationAndTimeZone record {|
 
 @test:Config
 function testRetrievingPlaceDataWithCityData() returns error? {
-    CityData cityData = {
-        total_count: 1,
-        results: [
-            {
-                population: 450000,
-                timezone: "America/New_York"
-            }
-        ]
+    city_data_client:CityDataResultsItem cityData = {
+        population: 450000,
+        timezone: "America/New_York",
+        admin1_code: "",
+        elevation: "",
+        country: "",
+        latitude: "",
+        coordinates: {lon: 0, lat: 0},
+        country_code_2: (),
+        dem: 0,
+        admin4_code: (),
+        geoname_id: "",
+        alternate_names: [],
+        country_code: "",
+        feature_class: "",
+        ascii_name: "",
+        admin2_code: "",
+        modification_date: "",
+        name: "",
+        admin3_code: (),
+        feature_code: "",
+        longitude: ""
     };
 
     test:prepare(geoClient)
-        .when("get")
-        .withArguments("/geonames-all-cities-with-a-population-500/records?refine=name:Miami&refine=country:United States")
+        .when("getCityData")
+        .withArguments("Miami", "United States")
         .thenReturn(cityData);
 
     json payload = check cl->execute(string `query QueryPlace($placeId: ID!) {

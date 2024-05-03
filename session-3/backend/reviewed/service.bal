@@ -8,6 +8,8 @@ import ballerina/log;
 
 import xlibb/pubsub;
 
+import maryamzi/city_data_client;
+
 const USER_ID = "userId";
 
 configurable boolean graphiqlEnabled = false;
@@ -24,9 +26,9 @@ function init() returns error? {
     }
 }
 
-final http:Client geoClient = check getGeoClient();
+final city_data_client:Client geoClient = check getGeoClient();
 
-function getGeoClient() returns http:Client|error => new ("https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets");
+function getGeoClient() returns city_data_client:Client|error => new ();
 
 final db:Client db = check new;
 
@@ -103,27 +105,9 @@ type CityDataResultsItem record {
     string timezone;
 };
 
-type CityData record {
-    int total_count;
-    CityDataResultsItem[] results;
-};
-
 isolated function getCityData(string city, string country) returns CityDataResultsItem|error {
     log:printInfo("Retrieving city data", city = city, country = country);
-    CityData cityData = check geoClient->get(
-        string `/geonames-all-cities-with-a-population-500/records?refine=name:${
-            city}&refine=country:${country}`);
-
-    if cityData.total_count == 0 {
-        return error(string `cannot find data for ${city}, ${country}`);
-    }
-
-    // Assume the entry with the highest population is the most correct one.
-    CityDataResultsItem[] results = cityData.results;
-    int[] populationValues = from CityDataResultsItem {population} in results select population;
-    int max = int:max(populationValues[0], ...populationValues.slice(1));
-    int indexOfEntryWithHighestPopulation = check populationValues.indexOf(max).ensureType();
-    return results[indexOfEntryWithHighestPopulation];
+    return geoClient->getCityData(city, country);
 }
 
 type Place distinct service object {
