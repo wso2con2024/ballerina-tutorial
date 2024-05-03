@@ -68,3 +68,14 @@ These areas will be covered via an implementation of a GraphQL backend in Baller
     i. introduce the rest of the output objects - `Author` and `Review`
 
     ii. introduce a query that accepts arguments (`place` to retrieve place data for a given place ID)
+
+#### Level 3 - Introduce object types with relationships and queries with arguments
+
+- Branch - https://github.com/wso2con2024/ballerina-tutorial/tree/session-3-level-3
+
+- Consists of objects for Review and Author and introduces the relationships.
+
+- Also introduces the `place` query that accepts the place ID as an argument and to expose place information relevant to the place with the given ID. 
+
+- As the next step (level 4), let's add a mutation operation, to add a new review.
+

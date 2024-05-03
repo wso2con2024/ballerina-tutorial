@@ -1,23 +1,40 @@
-# Get back partial data by making fields for which resolving can fail nilable.
-# For the erroneous country name ("US" instead of "United States")
-# 1. when `timezone` is not requested we still get partial data
-query ErroneousNilableFieldQuery {
+query QueryPlaces {
   places {
-    id
+    id # for subsequent calls
+    name
+    city
+    country
+  }
+}
+
+query QueryPlace($placeId: ID!) {
+  place(placeId: $placeId) {
     name
     city
     country
     population
+    timezone
+    reviews {
+      author {
+        id # for subsequent calls
+        username
+      }
+      content      
+    }
   }
 }
 
-# 2. but when `timezone` is requested we don't get any data
-query ErroneousNonNilableFieldQuery {
-  places {
-    id
-    name
-    city
-    country
-    timezone
+query QueryAuthor($authorId: ID!) {
+  author(authorId: $authorId) {
+    username
+    reviews {
+      place {
+        id # for subsequent calls
+        name
+        city
+        country
+      }
+      content
+    }
   }
 }

@@ -14,6 +14,14 @@ service /reviewed on new graphql:Listener(9000) {
         return from PlaceData placeData in places
             select new Place(placeData.id);
     }
+
+    resource function get place(@graphql:ID int placeId) returns Place {
+        return new (placeId);
+    }
+
+    resource function get author(@graphql:ID int authorId) returns Author {
+        return new (authorId);
+    }
 }
 
 type CityDataResultsItem record {
@@ -59,23 +67,74 @@ service class Place {
 
     resource function get country() returns string => self.country;
 
-    // Has nil in the return type, only this field will become null if 
-    // this resolver resource method returns error.
     resource function get population() returns int|error? {
         CityDataResultsItem cityData = check getCityData(self.city, self.country);
         return cityData.population;
     }
 
-    // Does not have nil in the return type, therefore, the entire data retrieval
-    // will just return null when this resolver resource method returns error.
-    resource function get timezone() returns string|error {
+    resource function get timezone() returns string|error? {
         CityDataResultsItem cityData = check getCityData(self.city, self.country);
         return cityData.timezone;
+    }
+
+    resource function get reviews() returns Review[] {
+        return from ReviewData reviewData in reviews
+            where reviewData.placeId == self.id
+            select new (reviewData.id);
     }
 
     resource function get rating() returns decimal? {
         return from ReviewData {placeId, rating} in reviews
             where placeId == self.id
             collect avg(rating);
+    }
+}
+
+service class Review {
+    final int id;
+    final int rating;
+    final string content;
+    final int placeId;
+    final int authorId;
+
+    function init(@graphql:ID int id) {
+        ReviewData reviewData = reviews.get(id);
+        self.id = id;
+        self.rating = reviewData.rating;
+        self.content = reviewData.content;
+        self.placeId = reviewData.placeId;
+        self.authorId = reviewData.authorId;
+    }
+
+    resource function get id() returns @graphql:ID int => self.id;
+
+    resource function get rating() returns int => self.rating;
+
+    resource function get content() returns string => self.content;
+
+    resource function get place() returns Place =>
+        new (self.placeId);
+
+    resource function get author() returns Author =>
+        new (self.authorId);
+}
+
+service class Author {
+    final int id;
+    final string username;
+
+    function init(@graphql:ID int id) {
+        self.id = id;
+        self.username = authors.get(id).username;
+    }
+
+    resource function get id() returns @graphql:ID int => self.id;
+
+    resource function get username() returns string => self.username;
+
+    resource function get reviews() returns Review[] {
+        return from ReviewData reviewData in reviews
+            where reviewData.authorId == self.id
+            select new Review(reviewData.id);
     }
 }
