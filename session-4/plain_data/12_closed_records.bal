@@ -1,5 +1,3 @@
-import ballerina/io;
-
 type Student record {|
     string firstName;
     string lastName;

@@ -22,7 +22,7 @@ public function main() {
     if result is string {
         io:println("Operation successful");
     } else {
-        io:println("Operation failed", e.message());
+        io:println("Operation failed", result.message());
     }
 
     // Checking using `check` expression and catch using do-on-fail
@@ -62,6 +62,7 @@ service on new http:Listener(8080) {
             // Log the error for auditing. 
             // Return protocol specific error(s) 
             // Optinal return a reference id to track the error.
+            return http:BAD_REQUEST; 
         }
     }
 }

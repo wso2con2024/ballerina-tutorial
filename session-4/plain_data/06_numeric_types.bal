@@ -1,5 +1,3 @@
-import ballerina/io;
-
 public function main() returns error? {
 
     int a = 10;

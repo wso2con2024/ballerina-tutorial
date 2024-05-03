@@ -1,5 +1,4 @@
 // Two value - boolean `true` and `false` values
-import ballerina/constraint;
 
 public function main() returns error? {
 
