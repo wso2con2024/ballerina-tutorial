@@ -1,4 +1,5 @@
 import ballerina/io;
+import ballerina/constraint;
 
 public function main() {
 
@@ -43,3 +44,11 @@ public function main() {
 function fullName(string firstName, string lastName) returns string {
     return string `${firstName} ${lastName}`;
 }
+
+type Person record {
+    string name;
+    @constraint:String {
+        pattern: re `^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`
+    }
+    string email;
+};

@@ -1,3 +1,4 @@
+import ballerina/constraint;
 import ballerina/io;
 
 // int : 64 bit signed integer
@@ -32,4 +33,30 @@ public function main() returns error? {
 
     // Special values
     int d = int:MAX_VALUE;
+
+    // Constraints Validation
+    Grades grades = {math: 90, chemistry: 110, physics: 70};
+    Grades validGrade = check constraint:validate(grades);
+    //     ^^^^^^^^^^^ By defining this as immutable, we can ensure that the validated 
+    //                 value is not modified. Let's discuss this during the immutability example.
 }
+
+// Constraints API is used to do validations on the Ballerina types.
+
+type Grades record {
+    @constraint:Int {
+        minValue: 0,
+        maxValue: 100
+    }
+    int math;
+    @constraint:Int {
+        minValue: 0,
+        maxValue: 100
+    }
+    int chemistry;
+    @constraint:Int {
+        minValue: 0,
+        maxValue: 100
+    }
+    int physics;
+};

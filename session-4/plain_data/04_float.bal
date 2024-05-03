@@ -1,4 +1,5 @@
 // import ballerina/io;
+import ballerina/constraint;
 
 // float is a 64-bit IEEE 754 floating point number.
 
@@ -21,3 +22,16 @@ public function main() returns error? {
 
     float val = check float:fromString("10.0");
 }
+
+type Location record {|
+    @constraint:Float {
+        minValue: -90.0,
+        maxValue: 90.0
+    }
+    float latitude;
+    @constraint:Float {
+        minValue: -180.0,
+        maxValue: 180.0
+    }
+    float longitude;
+|};

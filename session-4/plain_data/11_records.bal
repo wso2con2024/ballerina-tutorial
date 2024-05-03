@@ -32,5 +32,61 @@ public function main() {
 
     // Remove field
     _ = person.remove("city"); // Panics if key is not found
-    _ = person.remove("firstName"); // Panics, even if key is found.
+    // _ = person.remove("firstName"); // Panics, even if key is found.
+
+    demoUsers();
 }
+
+// Record inclusion. 
+type Employee record {
+    *Person;
+    string employeeId;
+    string department;
+};
+
+type Contractor record {
+    *Person;
+    string? employeeId; // Optional type.
+    string department?; // Optional field.
+};
+
+function demoUsers() {
+    Contractor contractor = {
+        firstName: "Jane",
+        lastName: "Doe",
+        age: 25,
+        employeeId: ()
+    };
+    io:println("Contractor: ", contractor);
+    // {"employeeId":null,"firstName":"Jane","lastName":"Doe","age":25}
+
+    contractor.employeeId = "C001";
+    io:println("Contractor(with ID): ", contractor);
+    // {"employeeId":"C001","firstName":"Jane","lastName":"Doe","age":25}
+
+    contractor.employeeId = ();
+    io:println("Contractor(without ID): ", contractor);
+    // {"employeeId":null,"firstName":"Jane","lastName":"Doe","age":25}
+
+    contractor.department = "HR";
+    io:println("Contractor(with Department): ", contractor);
+    // {"employeeId":null,"department":"HR","firstName":"Jane","lastName":"Doe","age":25}
+
+    // Remove optional field
+    contractor.department = ();
+    io:println("Contractor(without Department): ", contractor);
+    // {"employeeId":null,"firstName":"Jane","lastName":"Doe","age":25}
+
+    // Record without certain fields
+    User user = {username: "john", password: "1234"};
+    // user.age = 30; // Compile time error
+    string ageKey = "age";
+    user[ageKey] = 30; // Panics
+}
+
+type User record {
+    string username;
+    string password;
+    never age?;
+};
+

@@ -1,4 +1,6 @@
+import ballerina/constraint;
 import ballerina/io;
+import ballerinax/persist.sql;
 
 // decimal : 128 bit decimal floating point
 
@@ -17,10 +19,20 @@ public function main() returns error? {
     decimal sub = a - b;
     decimal sum = decimal:sum(a, b);
     decimal avg = decimal:avg(a, b, c);
-    
+
     decimal qte = decimal:quantize(a, 2.0);
     io:println("Quantized value: ", qte);
 
     decimal val = check decimal:fromString("10.0");
     io:println("Decimal value: ", val);
+
 }
+
+// Constraints
+
+type Item record {
+    @constraint:Number {minValue: 0, maxFractionDigits: 2}
+    @sql:Decimal {precision: [10, 2]} // precision, scale
+    decimal price = 10.0;
+    string name;
+};
