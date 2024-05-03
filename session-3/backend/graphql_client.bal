@@ -2,7 +2,9 @@ import ballerina/data.jsondata;
 import ballerina/graphql;
 import ballerina/io;
 
-final graphql:Client cl = check new ("http://localhost:9000/reviewed");
+final graphql:Client cl = check new ("https://localhost:9000/reviewed", secureSocket = {
+                                        cert: "./resources/certs/public.crt"
+                                    });
 
 public function main() returns error? {
     json payload = check cl->execute(string `{
@@ -36,7 +38,7 @@ public function main() returns error? {
             timezone
         }
     }`, {"placeId": 8002});
-    io:println(jsondata:prettify(response.data));
+    io:println(response.data is ());
     io:println(response.hasKey("errors"));
     io:println(response.errors);
 }
@@ -50,8 +52,8 @@ type Place record {|
 |};
 
 type Response record {
-    *graphql:GenericResponseWithErrors;
+    graphql:ErrorDetail[] errors?;
     record {|
         Place place;
-    |} data;
+    |}? data;
 };

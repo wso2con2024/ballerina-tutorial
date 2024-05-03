@@ -6,3 +6,11 @@ distribution = "2201.9.0"
 
 [build-options]
 observabilityIncluded = true
+
+[[platform.java17.dependency]]
+groupId = "io.ballerina.stdlib"
+artifactId = "persist.sql-native"
+# version = "1.3.0"
+version = "1.2.1"
+
+
