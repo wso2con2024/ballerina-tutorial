@@ -1,0 +1,16 @@
+query QueryPlaces {
+  places {
+    id
+    name
+    city
+    country
+    entryFee
+  }
+}
+
+query QueryPlacesNameAndCountry {
+  places {
+    name
+    country
+  }
+}
