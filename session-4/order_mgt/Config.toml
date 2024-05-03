@@ -1,0 +1,7 @@
+[order_mgt.db]
+host = "localhost"
+port = 3307
+user = "dbuser"
+password = "dbpwd123"
+database = "orderDB"
+

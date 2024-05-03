@@ -1,0 +1,25 @@
+{
+    "id": "001",
+    "customer": {
+        "id": "1001",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "loyalty": "premium",
+        "optedInNewsLetter": "true"
+    },
+    "items": [
+        {
+            "id": "a1",
+            "name": "Widget A",
+            "quantity": 2,
+            "price": 15.00
+        },
+        {
+            "id": "b2",
+            "name": "Gadget B",
+            "quantity": 1,
+            "price": 25.00
+        }
+    ],
+    "total": 55.00
+}
