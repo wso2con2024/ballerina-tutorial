@@ -1,5 +1,5 @@
 ### Create an item
-POST http://localhost:9090/itemSimple/
+POST http://localhost:9090/item-simple/
 Content-Type: application/json
 
 {

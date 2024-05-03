@@ -3,13 +3,12 @@ import order_mgt.db;
 import ballerina/data.jsondata;
 import ballerina/http;
 import ballerina/log;
+import ballerina/persist;
 import ballerina/uuid;
-
-listener http:Listener httpListener = new (9090);
 
 final isolated db:Client dbClient = check new ();
 
-service / on httpListener {
+service / on new http:Listener(9090) {
 
     resource function post item(ItemRequest request) returns ItemResponse|http:BadRequest {
         // Simple error handling technique.
@@ -29,13 +28,13 @@ service / on httpListener {
             http:BadRequest badRequest = {
                 body: {message: "Invalid request", code: ref}
             };
-            // Log the incoming request for later analysis
+
             log:printError("Add Item Error", err, code = ref);
             return badRequest;
         }
     }
 
-    resource function post itemSimple(http:Request httpReq) returns ItemResponse|http:BadRequest {
+    resource function post item\-simple(http:Request httpReq) returns ItemResponse|http:BadRequest {
         // Simple error handling technique.
         string ref = uuid:createType1AsString();
         do {
@@ -54,12 +53,13 @@ service / on httpListener {
             http:BadRequest badRequest = {
                 body: {message: "Invalid request", code: ref}
             };
+
             log:printError("Add Item Error", err, code = ref);
             return badRequest;
         }
     }
 
-    resource function get orders/[string id]() returns OrderResponse|http:NotFound {
+    resource function get orders/[string id]() returns OrderResponse|http:NotFound|http:InternalServerError {
         string ref = uuid:createType1AsString();
         do {
             // Get the order from the db
@@ -71,14 +71,21 @@ service / on httpListener {
 
             // Transform the db entity to the response
             return transform(data, list);
-        } on fail error err {
+        } on fail var err {
             // Error handling
-            http:NotFound notFound = {
-                body: {message: "Order not found", code: id}
+            if err is persist:NotFoundError {
+                http:NotFound notFound = {
+                    body: {message: "Order not found", code: id}
+                };
+                // Log the incoming request for later analysis
+                log:printError("Order Not Found", err, code = ref, id = id);
+                return notFound;
+            }
+            http:InternalServerError internalError = {
+                body: {message: "Internal server error", code: ref}
             };
-            // Log the incoming request for later analysis
             log:printError("Get Order Error", err, code = ref, id = id);
-            return notFound;
+            return internalError;
         }
     }
 }
