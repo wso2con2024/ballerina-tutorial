@@ -22,6 +22,13 @@ service /reviewed on new graphql:Listener(9000) {
     resource function get author(@graphql:ID int authorId) returns Author {
         return new (authorId);
     }
+
+    remote function addReview(ReviewInput reviewInput) returns Review {
+        int id = reviews.nextKey();
+        ReviewData reviewData = {id, ...reviewInput};
+        reviews.add(reviewData);
+        return new (id);
+    }
 }
 
 type CityDataResultsItem record {
@@ -138,3 +145,10 @@ service class Author {
             select new Review(reviewData.id);
     }
 }
+
+type ReviewInput record {|
+    int rating;
+    string content;
+    int placeId;
+    int authorId;
+|};

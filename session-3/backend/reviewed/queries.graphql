@@ -1,40 +1,24 @@
-query QueryPlaces {
-  places {
-    id # for subsequent calls
+query QueryPlace {
+  place(placeId: 8000) {
+    id
     name
-    city
-    country
-  }
-}
-
-query QueryPlace($placeId: ID!) {
-  place(placeId: $placeId) {
-    name
-    city
-    country
-    population
-    timezone
+    rating
     reviews {
+      id
+      rating
+      content
       author {
-        id # for subsequent calls
+        id
         username
       }
-      content      
     }
   }
 }
 
-query QueryAuthor($authorId: ID!) {
-  author(authorId: $authorId) {
-    username
-    reviews {
-      place {
-        id # for subsequent calls
-        name
-        city
-        country
-      }
-      content
-    }
+mutation AddReview {
+  addReview(reviewInput: {placeId: 8000, authorId: 5000, rating: 5, content: "Can't wait to come back!"}) {
+    id
+    rating
+    content
   }
 }
