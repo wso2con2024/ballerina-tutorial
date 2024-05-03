@@ -129,3 +129,28 @@ These areas will be covered via an implementation of a GraphQL backend in Baller
 
     ii. tests for the implementation
 
+#### Level 7 - Use a Ballerina GraphQL client and add tests for the implementation
+
+- Branch - https://github.com/wso2con2024/ballerina-tutorial/tree/session-3-level-7
+
+- Introduces a [GraphQL client sample](./graphql_client.bal) demonstrating how a Ballerina GraphQL client can be used with a GraphQL server.
+
+- Introduces tests using the [Ballerina's built-in test framework](https://ballerina.io/learn/test-ballerina-code/test-a-simple-function/).
+
+    - Import the `ballerina/test` module to use the test framework. Supports assertions, before, after, etc. functions, grouping, and more.
+
+    - Extensive support for [client and service testing](https://ballerina.io/learn/test-ballerina-code/test-services-and-clients/), including support for [mocking](https://ballerina.io/learn/test-ballerina-code/mocking/), that enables mocking remote calls.
+    
+    - Tests are run using the `bal test` command.
+
+        `bal test --test-report --code-coverage`
+
+        - The `--test-report` option generates a test report
+
+        - The `--code-coverage` option utilizes the built-in support for code coverage to include coverage information in the report
+
+        - See [code coverage and reporting](https://ballerina.io/learn/test-ballerina-code/code-coverage-and-reporting/).
+
+- Now that we are done with the core implementation, let's take it to the next level (level 8), introducing features such as data loaders (for batching and caching) and authorization and integrating data persistence.
+
+

@@ -4,7 +4,9 @@ import ballerina/log;
 
 import xlibb/pubsub;
 
-final http:Client geoClient = check new ("https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets");
+final http:Client geoClient = check getGeoClient();
+
+function getGeoClient() returns http:Client|error => new ("https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets");
 
 final pubsub:PubSub subscriptions = new;
 
