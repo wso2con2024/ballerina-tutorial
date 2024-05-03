@@ -1,16 +1,19 @@
-query QueryPlaces {
+query QueryPlacesWithoutCityDetails {
   places {
     id
     name
     city
     country
-    entryFee
   }
 }
 
-query QueryPlacesNameAndCountry {
+query QueryPlacesWithCityDetails {
   places {
+    id
     name
+    city
     country
+    timezone
+    population
   }
 }

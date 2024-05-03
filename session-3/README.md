@@ -43,3 +43,10 @@ These areas will be covered via an implementation of a GraphQL backend in Baller
     - path - string `/geonames-all-cities-with-a-population-500/records?refine=name:${
         city}&refine=country:${country}` 
 
+#### Level 1 - Record as output type
+
+- Branch - https://github.com/wso2con2024/ballerina-tutorial/tree/session-3-level-1
+
+- Consists of the GraphQL service implementation to retrieve `places` with additional city information, with records as output object types.
+
+- But records, may not always be ideal if additional work is done to resolve fields, since it will be unnecessary if such a field is not requested. Similarly, records aren't ideal when there are relationships between objects and each object needs to be accessible via the other (e.g., review via place and place via review). For level 2, we will change record output type to an object output type.
