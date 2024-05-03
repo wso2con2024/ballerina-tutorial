@@ -1,57 +1,23 @@
-query QueryPlace {
-  place(placeId: 8001) {
+query QueryWithInterface {
+  places {
     id
     name
-    rating
-    reviews {
+    ... on PlaceWithEntranceFee {
+      fee
+    }
+  }
+}
+
+query QueryWithUnion {
+  places {
+    ... on PlaceWithFreeEntrance {
+      id 
+      name
+    }
+    ... on PlaceWithEntranceFee {
       id
-      rating
-      content
-      author {
-        id
-        username
-      }
+      name
+      fee
     }
-  }
-}
-
-subscription ReviewsSubscription {
-  reviews(placeId: 8001) {
-    id
-    rating
-    content
-    author {
-      username
-    }
-  }
-}
-
-mutation AddReview1 {
-  addReview(
-    reviewInput: {placeId: 8001, authorId: 5000, rating: 5, content: "Can't wait to come back!"}
-  ) {
-    id
-    rating
-    content
-  }
-}
-
-mutation AddReview2 {
-  addReview(
-    reviewInput: {placeId: 8000, authorId: 5000, rating: 2, content: "Disappointing, most of the kid-friendly places were closed or operating at limited capacity"}
-  ) {
-    id
-    rating
-    content
-  }
-}
-
-mutation AddReview3 {
-  addReview(
-    reviewInput: {placeId: 8001, authorId: 5001, rating: 4, content: "Enjoyed our visit, but would have been better if there were more activities for kids"}
-  ) {
-    id
-    rating
-    content
   }
 }

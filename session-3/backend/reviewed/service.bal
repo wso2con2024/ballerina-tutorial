@@ -17,11 +17,11 @@ service /reviewed on new graphql:Listener(9000) {
 
     resource function get places() returns Place[] {
         return from PlaceData placeData in places
-            select new Place(placeData.id);
+            select getPlace(placeData.id);
     }
 
     resource function get place(@graphql:ID int placeId) returns Place {
-        return new (placeId);
+        return getPlace(placeId);
     }
 
     resource function get author(@graphql:ID int authorId) returns Author {
@@ -66,7 +66,30 @@ function getCityData(string city, string country) returns CityDataResultsItem|er
     return cityData.results[0];
 }
 
-service class Place {
+type Place distinct service object {
+    resource function get id() returns @graphql:ID int;
+
+    resource function get name() returns string;
+
+    resource function get city() returns string;
+
+    resource function get country() returns string;
+
+    resource function get population() returns int|error?;
+
+    resource function get timezone() returns string|error?;
+
+    resource function get reviews() returns Review[];
+
+    resource function get rating() returns decimal?;
+};
+
+// With union.
+// type Place PlaceWithEntranceFee|PlaceWithFreeEntrance;
+
+distinct service class PlaceWithFreeEntrance {
+    *Place;
+
     final int id;
     final string name;
     final string city;
@@ -111,7 +134,58 @@ service class Place {
     }
 }
 
-service class Review {
+distinct service class PlaceWithEntranceFee {
+    *Place;
+
+    final int id;
+    final string name;
+    final string city;
+    final string country;
+    final decimal fee;
+
+    function init(@graphql:ID int id) {
+        PlaceData placeData = places.get(id);
+        self.id = id;
+        self.name = placeData.name;
+        self.city = placeData.city;
+        self.country = placeData.country;
+        self.fee = placeData.entryFee;
+    }
+
+    resource function get id() returns @graphql:ID int => self.id;
+
+    resource function get name() returns string => self.name;
+
+    resource function get city() returns string => self.city;
+
+    resource function get country() returns string => self.country;
+
+    resource function get population() returns int|error? {
+        CityDataResultsItem cityData = check getCityData(self.city, self.country);
+        return cityData.population;
+    }
+
+    resource function get timezone() returns string|error? {
+        CityDataResultsItem cityData = check getCityData(self.city, self.country);
+        return cityData.timezone;
+    }
+
+    resource function get reviews() returns Review[] {
+        return from ReviewData reviewData in reviews
+            where reviewData.placeId == self.id
+            select new (reviewData.id);
+    }
+
+    resource function get rating() returns decimal? {
+        return from ReviewData {placeId, rating} in reviews
+            where placeId == self.id
+            collect avg(rating);
+    }
+
+    resource function get fee() returns decimal => self.fee;
+}
+
+public service class Review {
     final int id;
     final int rating;
     final string content;
@@ -134,7 +208,7 @@ service class Review {
     resource function get content() returns string => self.content;
 
     resource function get place() returns Place =>
-        new (self.placeId);
+        getPlace(self.placeId);
 
     resource function get author() returns Author =>
         new (self.authorId);
@@ -166,3 +240,10 @@ type ReviewInput record {|
     int placeId;
     int authorId;
 |};
+
+function getPlace(int placeId) returns Place {
+    decimal entryFee = places.get(placeId).entryFee;
+    return entryFee == 0d ?
+        new PlaceWithFreeEntrance(placeId) :
+        new PlaceWithEntranceFee(placeId);
+}

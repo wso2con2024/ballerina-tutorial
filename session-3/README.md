@@ -114,3 +114,18 @@ These areas will be covered via an implementation of a GraphQL backend in Baller
     ii. A union specifies the possible types that can be returned. Unlike interfaces, unions don't have shared fields, and therefore, are most suitable when there's little to no common fields among the objects.
 
     Ballerina's object type can be used as an interface and union types are both syntactically and semantically similar to GraphQL union types.
+
+#### Level 6 - Introduce an interface for Place
+
+- Branch - https://github.com/wso2con2024/ballerina-tutorial/tree/session-3-level-6
+
+- Introduces an interface for `Place` with two implementations - `PlaceWithFreeEntrance` and `PlaceWithEntranceFee`. `PlaceWithEntranceFee` additionally exposes a `fee` field.
+
+    Ballerina requires `distinct` objects (which is Ballerina's way of allowing nominal type-like behaviour) with interfaces and unions to differentiate between the possible return types.
+
+- Now that we're done with the core service implementations, next (level 7), let's introduce
+
+    i. a Ballerina GraphQL client to consume this service
+
+    ii. tests for the implementation
+

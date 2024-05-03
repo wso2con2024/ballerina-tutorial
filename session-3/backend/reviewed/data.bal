@@ -21,8 +21,7 @@ type AuthorData record {|
 
 final table<PlaceData> key (id) places = table [
     {id: 8000, name: "Tower Vista", city: "Colombo", country: "Sri Lanka", entryFee: 0},
-    {id: 8001, name: "TechTrail", city: "Miami", country: "United States", entryFee: 10},
-    {id: 8002, name: "TechTrail", city: "Miami", country: "US", entryFee: 10} // place with invalid country value
+    {id: 8001, name: "TechTrail", city: "Miami", country: "United States", entryFee: 10}
 ];
 
 final table<ReviewData> key (id) reviews = table [
@@ -30,8 +29,7 @@ final table<ReviewData> key (id) reviews = table [
     {id: 1002, placeId: 8001, authorId: 5001, content: "Long queues, not worth the wait.", rating: 1},
     {id: 1003, placeId: 8000, authorId: 5002, content: "Tends to get crowded in the evening, other than that, great experience.", rating: 4},
     {id: 1004, placeId: 8001, authorId: 5000, content: "Getting in is a challenge, but if you can sort out transport, a must visit!", rating: 4},
-    {id: 1005, placeId: 8001, authorId: 5002, content: "An absolute must-visit for a tech enthusiast", rating: 5},
-    {id: 1006, placeId: 8002, authorId: 5000, content: "Would definitely visit again.", rating: 5} // review against place with invalid country value
+    {id: 1005, placeId: 8001, authorId: 5002, content: "An absolute must-visit for a tech enthusiast", rating: 5}
 ];
 
 final table<AuthorData> key (id) authors = table [
