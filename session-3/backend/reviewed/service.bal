@@ -1,7 +1,12 @@
 import ballerina/graphql;
 import ballerina/http;
+import ballerina/log;
+
+import xlibb/pubsub;
 
 final http:Client geoClient = check new ("https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets");
+
+final pubsub:PubSub subscriptions = new;
 
 @graphql:ServiceConfig {
     graphiql: {
@@ -27,7 +32,16 @@ service /reviewed on new graphql:Listener(9000) {
         int id = reviews.nextKey();
         ReviewData reviewData = {id, ...reviewInput};
         reviews.add(reviewData);
+        pubsub:Error? status = subscriptions.publish(reviewData.placeId.toString(), id);
+        if status is pubsub:Error {
+            log:printError("Error publishing review update", data = reviewData);
+        }
         return new (id);
+    }
+
+    resource function subscribe reviews(int placeId) returns stream<Review, error?>|error {
+        stream<int, error?> reviews = check subscriptions.subscribe(placeId.toString());
+        return from int reviewId in reviews select new (reviewId);
     }
 }
 

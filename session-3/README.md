@@ -88,3 +88,29 @@ These areas will be covered via an implementation of a GraphQL backend in Baller
 - Also introduces records as GraphQL input object types to accept structured input.
 
 - Now that we have updates, next (level 5), let's introduce a subscription operation, the GraphQL way for real-time, continuous updates. Let's introduce a subscription for reviews for a particular place.
+
+#### Level 5 - Introduce a subscription operation to receive updates when new reviews are added
+
+- Branch - https://github.com/wso2con2024/ballerina-tutorial/tree/session-3-level-5
+
+- Introduces a subscription operation, to receive real-time, continuous updates.
+
+- The Ballerina GraphQL module comes with built-in support for subscriptions. Just requires a `subscribe` resource method with a `stream` return type. 
+
+    Maintains a WebSocket connection to push updates.
+
+- Now that we have the operations set up, next (level 6), let's look at how some Ballerina features directly map to GraphQL concepts. We've already seen nullability in use. Let's now look at interfaces and unions.
+
+    Assume, some places require an entry fee to be paid while the others do not. We can have two concrete representations of places:
+
+    i. `PlaceWithFreeEntrance` to represent places with free entrance, with the exact fields we have in the current `Place` type 
+
+    ii. `PlaceWithEntranceFee` to represent places with an entrance fee, which has an `entranceFee` field in addition to the fields in the current `Place` type
+
+    Both interfaces and unions in GraphQL (and Ballerina) allow returning one of multiple values.
+
+    i. An interface specifies fields that multiple objects can include. Therefore, queries can be based on the interface. Additionally, implementations of the interface can return additional fields, which can be queried against the specific implementation types.
+
+    ii. A union specifies the possible types that can be returned. Unlike interfaces, unions don't have shared fields, and therefore, are most suitable when there's little to no common fields among the objects.
+
+    Ballerina's object type can be used as an interface and union types are both syntactically and semantically similar to GraphQL union types.
