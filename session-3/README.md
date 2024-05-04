@@ -366,7 +366,7 @@ Now that we have the core implementation done, we can work on incorporating a fe
 
         ii. Start up Jaegar and navigate to [http://localhost:16686](http://localhost:16686).
 
-        *Note: Alternatively, follow [Set up Grafana](https://ballerina.io/learn/observe-metrics/#set-up-grafana) to run Grafana on Docker.*
+        *Note: Alternatively, follow [Set up Jaegar](https://ballerina.io/learn/observe-tracing/#set-up-the-jaeger-server) to run Jaeger on Docker.*
 
 - Once the set up is done, you can send a few requests and "observe" the metrics and traces.
 
