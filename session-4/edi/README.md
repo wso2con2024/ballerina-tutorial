@@ -1,35 +1,36 @@
 # EDI (Electronic Data Interchange) Tool
 
-EDI is a widely used message format for business-to-business (B2B) communications. Ballerina simplifies working with EDI data by converting them to Ballerina records, so that all operations related to Ballerina records can be applied on EDI data as well; e.g. 
-- transforming EDI data
-- writing EDI data to databases
-- transering EDI data over various network protocols, etc.
+EDI is a widely used message format for business-to-business (B2B) communications. Ballerina simplifies the manipulation of EDI data by converting it into Ballerina records. This conversion allows developers to apply familiar record operations to EDI data, such as:
+- Transforming EDI data
+- Writing EDI data to databases
+- Transferring EDI data over various network protocols, and more.
 
-## Before you begin
+## Before You Begin
 
-First, it is necessary to write a schema for the EDI data type that needs to be processed. You can use [Ballerina EDI Schema Specification](https://github.com/ballerina-platform/module-ballerina-edi/blob/main/docs/specs/SchemaSpecification.md#ballerina-edi-schema-specification) as a reference to write the schema.
+Start by crafting a schema for the EDI data type you intend to process. Refer to the [Ballerina EDI Schema Specification](https://github.com/ballerina-platform/module-ballerina-edi/blob/main/docs/specs/SchemaSpecification.md#ballerina-edi-schema-specification) for guidance on writing your schema. This specification details the necessary components of an EDI schema, including attributes like _name_, _delimiters_, _segments_, _field definitions_, _components_, _sub-components_, and other configuration options.
 
-This specification outlines the essential components required to describe an EDI schema, encompassing attributes such as _name_, _delimiters_, _segments_, _field definitions_, _components_, _sub-components_, and additional configuration options.
-
-For the demonstration purpose, we will assume that we have an EDI schema that describes the structure of an EDI message. You can find the sample EDI schema [here](./resources/schema.json).
-You can find the sample EDI message [here](./resources/message.edi).
+For demonstration purposes, we will use a predefined EDI schema and message. You can find the sample EDI schema [here](./resources/schema.json) and the sample EDI message [here](./resources/message.edi).
 
 ## Using the EDI Tool
 
-1. First you need to pull EDI tool. You can do this by executing the following command. Create a Ballerina project and navigate to the project directory and execute the following command.
+1. **Setup:** 
+   To begin, ensure the EDI tool is installed on your local machine. Within your Ballerina project directory, execute the following command:
 
 ```shell
 bal tool pull edi
 ```
- This will download the EDI tool to your local machine.
 
-2. Use `bal edi` command to generate ballerina EDI APIs from the EDI schema. You can do this by executing the following command.
+This command downloads the EDI tool.
+
+2. **Generate Ballerina EDI APIs:**
+   Generate the APIs by pointing the tool to your EDI schema with the command below:
 
 ```shell
-bal edi -i resources/schema.json -o edi.bal
+bal edi codegen -i resources/schema.json -o types.bal
 ```
 
-3. Now you can use the generated ballerina APIs to process EDI messages. Create a new Ballerina file and copy the following code.
+3. **Process EDI Messages:**
+   Utilize the generated Ballerina APIs to process EDI messages. Start by creating a new Ballerina file and paste the following code:
 
 ```ballerina
 import ballerina/data.jsondata;
@@ -37,16 +38,19 @@ import ballerina/io;
 
 public function main() returns error? {
     string ediMsg = check io:fileReadString("resources/message.edi");
-    SubmitterEDIContactInformation fromEdiStringResult = check fromEdiString(ediMsg);
-    io:println(jsondata:prettify(fromEdiStringResult));
+    SimpleOrder data = check fromEdiString(ediMsg);
+    io:println(jsondata:prettify(data));
 }
 ```
 
-  You can see that the generated APIs are used to convert the EDI message to a Ballerina record.
+This code snippet demonstrates how the generated APIs convert an EDI message into a Ballerina record.
 
-4. Now you can use ballerina expression to transform/manipulate the EDI data.
+4. **Manipulate EDI Data:**
+   Now you can use Ballerina expressions to transform or manipulate the EDI data as needed.
 
 ## Useful Links
 
+- [Ballerina EDI Schema Specification](https://github.com/ballerina-platform/module-ballerina-edi/blob/main/docs/specs/SchemaSpecification.md#ballerina-edi-schema-specification)
 - [EDI to Record Conversion](https://ballerina.io/learn/by-example/edi-to-record/)
 - [Record to EDI Conversion](https://ballerina.io/learn/by-example/record-to-edi/)
+- Example: [FTP B2B EDI message to Salesforce opportunity](https://github.com/ballerina-guides/integration-samples/tree/main/ftp-edi-message-to-salesforce-opportunity)
