@@ -29,4 +29,14 @@ public function main() {
     map<[string, string]> entries = person.entries(); // Returns key-value pairs map
 
     io:println("Entries: ", entries);
+
+    // Iterate over map
+    foreach var value in person {
+        // Do something with value
+    }
+
+    foreach [string, string] [key, value] in person.entries() {
+        //                   ^^^^^^^^^^^^ - Data destructuring   
+        // Do something with key and value
+    }
 }

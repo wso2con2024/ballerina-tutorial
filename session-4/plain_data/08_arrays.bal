@@ -52,6 +52,11 @@ public function main() {
     queue.push(5);
     io:println("Queue: ", queue);
 
+    // Iterating over an array
+    foreach var i in numbers {
+        // Do something with i
+    }
+
     // Array of Arrays
 
     int[][] matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
