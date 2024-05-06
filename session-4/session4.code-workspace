@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "plain_data",
+			"name": "01 Plain Data Examples"
+		}, 
+		{
+			"path": "order_mgt",
+			"name": "02 Order Service"
+		},
+		{
+			"path" : "edi",
+			"name" : "03 EDI Tool Demo"
+		},
+		{
+			"path" : "handlebars",
+			"name" : "04 Java Bindgen Tool"
+		}
+	],
+	"settings": {}
+}

@@ -106,8 +106,8 @@ function transform(OrderWithRelations ord, GetOrderedItemWithRelations[] items) 
             id: ord.customer.customerID,
             name: ord.customer.firstName + " " + ord.customer.lastName,
             email: ord.customer.email,
-            loyalty: ord.customer.premiumCustomer.toString(),
-            optedInNewsLetter: ord.customer.optInEmail.toString()
+            loyalty: ord.customer.premiumCustomer ? "Premium" : "Regular",
+            optedInNewsLetter: ord.customer.optInEmail
         },
         items: from var itemsItem in items
             select {
