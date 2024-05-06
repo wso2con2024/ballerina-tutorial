@@ -2,6 +2,16 @@
 
 This sessions is dedicated to exploring the plain data. Each provided example demonstrates the fundamental data types and structures in Ballerina, showcasing why it is an effective language for handling data as data.
 
+## What is Plain Data?
+
+**Network data** is the data that is independent of any specific code operating on the data. This data is typically exchanged through network interfaces between programs. In Ballerina, this is known as plain data.
+
+Plain data is a fundamental concept in Ballerina. It is a data type that is not associated with any specific code. This means that the data can be passed around and manipulated without any restrictions. 
+
+In Ballerina, plain data is represented in its shape. Ballerina provides right set of abstraction to represent data, manipulate data and pass data around in harmony with the network data.
+
+## Ballerina Values
+
 ![Ballerina Values](PlainData.png)
 
 ## Contents
@@ -49,7 +59,11 @@ Each file in this repository corresponds to a specific aspect of Ballerina's dat
   - JSON manipulation and parsing.
 - **17_xml.bal**
   - Handling XML data.
+- **18_xmlToJson.bal**
+  - Converting XML to JSON.
+- **19_jsonToXml.bal**
+  - Converting JSON to XML.
 
 ### Error Handling
-- **18_errors.bal**
+- **20_errors.bal**
   - A quick introduction to error values.
