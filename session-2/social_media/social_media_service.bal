@@ -3,6 +3,7 @@ import ballerina/time;
 import ballerinax/mysql;
 import ballerina/sql;
 import ballerinax/mysql.driver as _;
+import social_media.sentiment;
 
 type User record {|
     readonly int id;
@@ -44,18 +45,7 @@ type PostForbidden record {|
     *http:Forbidden;
     ErrorDetails body;
 |};
-
-type Probability record {
-    decimal neg;
-    decimal neutral;
-    decimal pos;
-};
-
-type Sentiment record {
-    Probability probability;
-    string label;
-};
-final http:Client sentimentEp = check new("localhost:9098/text-processing");
+final sentiment:Client sentimentEp1 = check new ();
 
 configurable string host = ?;
 configurable string user = ?;
@@ -113,7 +103,7 @@ service /social\-media on new http:Listener(9095) {
             return user;
         }
 
-        Sentiment sentiment = check sentimentEp->/api/sentiment.post({ "text": newPost.description });
+        sentiment:Sentiment sentiment = check sentimentEp1->/api/sentiment.post({ "text": newPost.description });
         if sentiment.label == "neg" {
             ErrorDetails errorDetails = {
                 message: "Post contains negative sentiment",
