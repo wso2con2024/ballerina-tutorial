@@ -8,7 +8,7 @@ servers:
     server:
       default: http://localhost
     port:
-      default: "9000"
+      default: "9098"
 paths:
   /api/sentiment:
     post:
@@ -18,15 +18,45 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Post'
+        required: true
       responses:
-        "201":
-          description: Created
+        "200":
+          description: Ok
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Sentiment'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
 components:
   schemas:
+    ErrorPayload:
+      required:
+      - message
+      - method
+      - path
+      - reason
+      - status
+      - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        method:
+          type: string
     Post:
       required:
       - text
