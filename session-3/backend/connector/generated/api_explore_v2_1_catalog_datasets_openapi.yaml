@@ -1,0 +1,152 @@
+openapi: 3.0.1
+info:
+  title: Api Explore V2 1 Catalog Datasets
+  version: 0.1.0
+servers:
+- url: "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets"
+paths:
+  /geonames-all-cities-with-a-population-500/records:
+    get:
+      operationId: getGeonamesAllCitiesWithAPopulation500Records
+      parameters:
+      - name: refine
+        in: query
+        required: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CityData'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+        "404":
+          description: NotFound
+components:
+  schemas:
+    CityData:
+      required:
+      - results
+      - total_count
+      type: object
+      properties:
+        total_count:
+          type: integer
+          format: int64
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResultsItem'
+    Coordinates:
+      required:
+      - lat
+      - lon
+      type: object
+      properties:
+        lon:
+          type: number
+          format: double
+        lat:
+          type: number
+          format: double
+    ErrorPayload:
+      required:
+      - message
+      - method
+      - path
+      - reason
+      - status
+      - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        method:
+          type: string
+    ResultsItem:
+      required:
+      - admin1_code
+      - admin2_code
+      - admin3_code
+      - admin4_code
+      - alternate_names
+      - ascii_name
+      - coordinates
+      - country
+      - country_code
+      - country_code_2
+      - dem
+      - elevation
+      - feature_class
+      - feature_code
+      - geoname_id
+      - latitude
+      - longitude
+      - modification_date
+      - name
+      - population
+      - timezone
+      type: object
+      properties:
+        population:
+          type: integer
+          format: int64
+        timezone:
+          type: string
+        admin1_code:
+          type: string
+        elevation:
+          type: string
+          nullable: true
+        country:
+          type: string
+        latitude:
+          type: string
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        country_code_2: {}
+        dem:
+          type: integer
+          format: int64
+        admin4_code: {}
+        geoname_id:
+          type: string
+        alternate_names:
+          type: array
+          items:
+            type: string
+        country_code:
+          type: string
+        feature_class:
+          type: string
+        ascii_name:
+          type: string
+        admin2_code:
+          type: string
+        modification_date:
+          type: string
+        name:
+          type: string
+        admin3_code: {}
+        feature_code:
+          type: string
+        longitude:
+          type: string

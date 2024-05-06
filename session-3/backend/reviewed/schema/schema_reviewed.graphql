@@ -1,0 +1,79 @@
+type Query {
+  places(city: String, country: String, sortByRating: Boolean! = false): [Place!]!
+  place(placeId: ID!): Place!
+  author(authorId: ID!): Author!
+}
+
+interface Place {
+  id: ID!
+  name: String!
+  city: String!
+  country: String!
+  population: Int
+  timezone: String
+  reviews: [Review!]
+  rating: Decimal
+}
+
+type PlaceWithFreeEntrance implements Place {
+  id: ID!
+  name: String!
+  city: String!
+  country: String!
+  population: Int
+  timezone: String
+  reviews: [Review!]
+  rating: Decimal
+}
+
+type Review {
+  id: ID!
+  rating: Int!
+  content: String!
+  place: Place
+  author: Author
+}
+
+type Author {
+  id: ID!
+  username: String!
+  reviews: [Review!]
+}
+
+"The `Decimal` type corresponds to a subset of IEEE 754-2008 128-bit decimal (radix 10) floating point numbers"
+scalar Decimal
+
+type PlaceWithEntranceFee implements Place {
+  id: ID!
+  name: String!
+  city: String!
+  country: String!
+  population: Int
+  timezone: String
+  reviews: [Review!]
+  rating: Decimal
+  fee: Decimal!
+}
+
+type Mutation {
+  addReview(reviewInput: ReviewInput!): Review!
+  addPlace(placeInput: PlaceInput!): Place!
+}
+
+input ReviewInput {
+  rating: Int!
+  content: String!
+  placeId: Int!
+  authorId: Int!
+}
+
+input PlaceInput {
+  name: String!
+  city: String!
+  country: String!
+  entryFee: Decimal!
+}
+
+type Subscription {
+  reviews(placeId: Int!): Review!
+}

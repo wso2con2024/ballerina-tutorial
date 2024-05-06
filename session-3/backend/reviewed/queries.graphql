@@ -1,0 +1,85 @@
+query QueryPlacesSummmary {
+  places {
+    id
+    name
+    city
+    country
+    rating
+  }
+}
+
+query QueryPlacesSummmarySortByRating {
+  places(sortByRating: true) {
+    id
+    name
+    city
+    country
+    rating
+  }
+}
+
+query QueryPlacesByCity($city: String!) {
+  places(city: $city) {
+    id
+    name
+    city
+    country
+  }
+}
+
+query QueryPlacesByCountry($country: String!) {
+  places(country: $country) {
+    id
+    name
+    city
+    country
+  }
+}
+
+query QueryPlacesByCityAndCountry {
+  places(country: "Sri Lanka", city: "Colombo") {
+    id
+    name
+    city
+    country
+  }
+}
+
+query QueryPlacesWithReviews {
+  places {
+    id
+    name
+    city
+    country
+    population
+    timezone
+    reviews {
+      id
+      author {
+        username
+      }
+      content
+      rating
+    }
+  }
+}
+
+mutation AddReview {
+  addReview(reviewInput: {authorId: 5003, placeId: 8000, content:"Meh", rating: 2}) {
+    content
+  }
+}
+
+mutation AddReviewWithInvalidRating {
+  addReview(reviewInput: {authorId: 5003, placeId: 8000, content:"Meh", rating: 7}) {
+    content
+  }
+}
+
+# Requires the `userId` header for  authorization. 
+# `5002` and `5003` are currently hardcoded as authorized users.
+mutation AddPlace {
+  addPlace(placeInput: {name: "Auxa", city: "Miami", country: "United States", entryFee: 5}) {
+    id
+  }
+}
