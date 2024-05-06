@@ -8,6 +8,11 @@ final graphql:Client cl = check new ("https://localhost:9000/reviewed", secureSo
                                     });
 
 public function main() returns error? {
+    check sendRequests();
+    check sendRequests();
+}
+
+function sendRequests() returns error? {
     json _ = check cl->execute(document, operationName = "QueryPlacesSummmary");
 
     json _ = check cl->execute(document, operationName = "QueryPlacesSummmarySortByRating");
