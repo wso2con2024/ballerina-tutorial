@@ -2,7 +2,7 @@
 org = "demo"
 name = "order_mgt"
 version = "0.1.0"
-distribution = "2201.9.0-20240425-195200-d5ce8c72"
+distribution = "2201.9.0"
 
 [build-options]
 observabilityIncluded = true
@@ -13,12 +13,8 @@ targetModule = "order_mgt.db"
 options.datastore = "mysql"
 filePath = "persist/model.bal"
 
-[[platform.java17.repository]]
-id="wso2-nexus-snapshot"
-url = "https://maven.wso2.org/nexus/content/repositories/snapshots/"
-
 [[platform.java17.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "persist.sql-native"
-version = "1.3.0-SNAPSHOT"
+version = "1.3.0"
 

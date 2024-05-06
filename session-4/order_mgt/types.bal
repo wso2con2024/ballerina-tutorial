@@ -98,7 +98,7 @@ type Customer record {
     string name;
     string email;
     string loyalty;
-    string optedInNewsLetter;
+    boolean optedInNewsLetter;
 };
 
 type ItemsItem record {

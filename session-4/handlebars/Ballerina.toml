@@ -2,7 +2,7 @@
 org = "demo"
 name = "templates"
 version = "0.1.0"
-distribution = "2201.9.0-20240502-141200-0a49fa42"
+distribution = "2201.9.0"
 
 [build-options]
 observabilityIncluded = true
