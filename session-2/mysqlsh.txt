@@ -1,0 +1,7 @@
+\connect social_media_user@localhost:3306
+
+\use social_media_database
+
+\q
+
+pwd - dummypassword
