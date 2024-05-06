@@ -1,0 +1,19 @@
+[package]
+org = "demo"
+name = "templates"
+version = "0.1.0"
+distribution = "2201.9.0"
+
+[build-options]
+observabilityIncluded = true
+
+[[platform.java17.dependency]]
+groupId = "com.github.jknack"
+artifactId = "handlebars"
+version = "4.3.1"
+
+# transitive dependency of com.github.jknack:handlebars:4.3.1
+[[platform.java17.dependency]]
+groupId = "org.slf4j"
+artifactId = "slf4j-api"
+version = "1.7.32"
