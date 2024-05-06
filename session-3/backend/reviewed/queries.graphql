@@ -18,34 +18,7 @@ query QueryPlacesSummmarySortByRating {
   }
 }
 
-query QueryPlacesByCity($city: String!) {
-  places(city: $city) {
-    id
-    name
-    city
-    country
-  }
-}
-
-query QueryPlacesByCountry($country: String!) {
-  places(country: $country) {
-    id
-    name
-    city
-    country
-  }
-}
-
-query QueryPlacesByCityAndCountry {
-  places(country: "Sri Lanka", city: "Colombo") {
-    id
-    name
-    city
-    country
-  }
-}
-
-query QueryPlacesWithReviews {
+query QueryPlacesDetailed {
   places {
     id
     name
@@ -76,10 +49,26 @@ mutation AddReviewWithInvalidRating {
   }
 }
 
-# Requires the `userId` header for  authorization. 
-# `5002` and `5003` are currently hardcoded as authorized users.
+# Requires the userId header for  authorization. 
+# 5002 and 5003 are currently hardcoded as authorized users.
 mutation AddPlace {
   addPlace(placeInput: {name: "Auxa", city: "Miami", country: "United States", entryFee: 5}) {
     id
+  }
+}
+
+mutation AddPlaceWithInvalidCountryName {
+  addPlace(placeInput: {name: "Auxa II", city: "Miami", country: "US", entryFee: 5}) {
+    id
+  }
+}
+
+query QueryPlace($placeId: ID!) {
+  place(placeId: $placeId) {
+    id
+    name
+    city
+    country
+    timezone
   }
 }

@@ -1,59 +1,32 @@
-import ballerina/data.jsondata;
 import ballerina/graphql;
 import ballerina/io;
+
+final string document = check io:fileReadString("./reviewed/queries.graphql");
 
 final graphql:Client cl = check new ("https://localhost:9000/reviewed", secureSocket = {
                                         cert: "./resources/certs/public.crt"
                                     });
 
 public function main() returns error? {
-    json payload = check cl->execute(string `{
-        places {
-            id
-            name
-            city
-            country
-        }
-    }`);
-    io:println(jsondata:prettify(payload));
+    json _ = check cl->execute(document, operationName = "QueryPlacesSummmary");
 
-    Response response = check cl->execute(string `query QueryPlace($placeId: ID!) {
-        place(placeId: $placeId) {
-            id
-            name
-            city
-            country
-            timezone
-        }
-    }`, {"placeId": 8001});
-    io:println(jsondata:prettify(response.data));
-    io:println(response.hasKey("errors"));
+    json _ = check cl->execute(document, operationName = "QueryPlacesSummmarySortByRating");
 
-    response = check cl->execute(string `query QueryPlace($placeId: ID!) {
-        place(placeId: $placeId) {
-            id
-            name
-            city
-            country
-            timezone
-        }
-    }`, {"placeId": 8002});
-    io:println(response.data is ());
-    io:println(response.hasKey("errors"));
-    io:println(response.errors);
+    json _ = check cl->execute(document, operationName = "QueryPlacesDetailed");
+
+    json _ = check cl->execute(document, {"placeId": 8001}, "QueryPlace");
+
+    json _ = check cl->execute(document, operationName = "AddReview");
+
+    // Error, constraint validation.
+    json _ = check cl->execute(document, operationName = "AddReviewWithInvalidRating");
+
+    // Forbidden.
+    json _ = check cl->execute(document, operationName = "AddPlace");
+
+    json response = check cl->execute(document, operationName = "AddPlaceWithInvalidCountryName", headers = {"userId": "5002"});
+    int id = check response.data.addPlace.id;
+
+    // Partial error (population and timezone), for invalid country name.
+    json _ = check cl->execute(document, {"placeId": id}, "QueryPlace");
 }
-
-type Place record {|
-    int id;
-    string name;
-    string city;
-    string country;
-    string? timezone;
-|};
-
-type Response record {
-    graphql:ErrorDetail[] errors?;
-    record {|
-        Place place;
-    |}? data;
-};
