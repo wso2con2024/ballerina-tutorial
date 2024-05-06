@@ -16,7 +16,11 @@
 
 import ballerina/http;
 import ballerina/log;
+import ballerina/openapi;
 
+@openapi:ServiceInfo {
+    embed: true
+}
 service /text\-processing on new http:Listener(9098) {
 
     public function init() {

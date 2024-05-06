@@ -40,3 +40,9 @@ POST http://localhost:9098/text-processing/api/sentiment
 {
     "text": "I hate this product"
 }
+
+### Discover OpenAPI speiciation
+OPTIONS  http://localhost:9098/text-processing
+
+### Get OpenAPI specification
+GET http://localhost:9098/text-processing/openapi-doc-dygixywsw
