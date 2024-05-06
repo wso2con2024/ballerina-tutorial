@@ -4,6 +4,8 @@ import ballerinax/mysql;
 import ballerina/sql;
 import ballerinax/mysql.driver as _;
 import social_media.sentiment;
+import ballerinax/prometheus as _;
+import ballerinax/jaeger as _;
 
 type User record {|
     readonly int id;
