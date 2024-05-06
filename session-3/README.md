@@ -348,6 +348,8 @@ Now that we have the core implementation done, we can work on incorporating a fe
 
         *Note: Alternatively, follow [Set up Grafana](https://ballerina.io/learn/observe-metrics/#set-up-grafana) to run Grafana on Docker.*
 
+        Import [this dashboard.json](./backend/resources/dashboard.json) file to import a dashboard that displays GraphQL metrics.
+
         ii. Navigate to [http://localhost:3000/](http://localhost:3000/)
 
     - Starting up [Jaegar](https://www.jaegertracing.io/download/).
