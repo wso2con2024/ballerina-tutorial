@@ -26,7 +26,7 @@ POST http://localhost:9095/social-media/users/3/posts
 content-type: application/json
 
 {
-    "description": "I want to learn Azure",
+    "description": "I love this product",
     "tags": "azure,cloud,devops",
     "category": "education"
 }
@@ -38,5 +38,5 @@ DELETE http://localhost:9095/social-media/users/1
 POST http://localhost:9098/text-processing/api/sentiment
 
 {
-    "text": "I love this product"
+    "text": "I hate this product"
 }

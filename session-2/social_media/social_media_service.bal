@@ -45,6 +45,18 @@ type PostForbidden record {|
     ErrorDetails body;
 |};
 
+type Probability record {
+    decimal neg;
+    decimal neutral;
+    decimal pos;
+};
+
+type Sentiment record {
+    Probability probability;
+    string label;
+};
+final http:Client sentimentEp = check new("localhost:9098/text-processing");
+
 configurable string host = ?;
 configurable string user = ?;
 configurable string password = ?;
@@ -84,7 +96,7 @@ service /social\-media on new http:Listener(9095) {
         return http:CREATED;
     }
 
-    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|error {
+    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error {
         User|error user = socialMediaDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
         if user is sql:NoRowsError {
             ErrorDetails errorDetails = {
@@ -99,6 +111,19 @@ service /social\-media on new http:Listener(9095) {
         }
         if user is error {
             return user;
+        }
+
+        Sentiment sentiment = check sentimentEp->/api/sentiment.post({ "text": newPost.description });
+        if sentiment.label == "neg" {
+            ErrorDetails errorDetails = {
+                message: "Post contains negative sentiment",
+                detail: "Post contains negative sentiment and cannot be posted",
+                timestamp: time:utcNow()
+            };
+            PostForbidden postForbidden = {
+                body: errorDetails
+            };
+            return postForbidden;
         }
 
         _ = check socialMediaDb->execute(`
