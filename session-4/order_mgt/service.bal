@@ -70,9 +70,10 @@ service / on new http:Listener(9090) {
                 select itemData;
 
             // Transform the db entity to the response
-            return transform(data, list);
+            return transformOrder(data, list);
         } on fail var err {
             // Error handling
+            // Return 404 if the order is not found
             if err is persist:NotFoundError {
                 http:NotFound notFound = {
                     body: {message: "Order not found", code: id}
@@ -81,6 +82,7 @@ service / on new http:Listener(9090) {
                 log:printError("Order Not Found", err, code = ref, id = id);
                 return notFound;
             }
+            // Return 500 if an internal server error occurs
             http:InternalServerError internalError = {
                 body: {message: "Internal server error", code: ref}
             };
@@ -97,7 +99,7 @@ function transformItemRequest(ItemRequest itemRequest) returns db:ItemInsert => 
     unit_price: itemRequest.stock.price.amount / itemRequest.stock.quantity
 };
 
-function transform(OrderWithRelations ord, GetOrderedItemWithRelations[] items) returns OrderResponse => let var prices = (from GetOrderedItemWithRelations item in items
+function transformOrder(OrderWithRelations ord, GetOrderedItemWithRelations[] items) returns OrderResponse => let var prices = (from GetOrderedItemWithRelations item in items
         let decimal value = <decimal>item.quantity * item.item.unit_price
         select value), var total = decimal:sum(...prices).round(2)
     in {
