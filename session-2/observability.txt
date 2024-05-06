@@ -1,0 +1,2 @@
+Graphana: http://localhost:3000/dashboard
+Jaeger: http://localhost:16686/

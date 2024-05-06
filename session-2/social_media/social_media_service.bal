@@ -19,8 +19,8 @@ import ballerina/regex;
 import ballerina/sql;
 import ballerina/time;
 import ballerinax/mysql.driver as _;
-
-configurable boolean moderate = ?;
+import ballerinax/prometheus as _;
+import ballerinax/jaeger as _;
 
 listener http:Listener socialMediaListener = new (9095);
 
