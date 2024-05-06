@@ -17,11 +17,6 @@ type User record {|
     string mobileNumber;
 |};
 
-table<User> key(id) userTable = table [
-    {id: 1, name: "John Doe", birthDate: {year: 1987, month: 2, day: 6}, mobileNumber: "0712345678"},
-    {id: 2, name: "Jane Doe", birthDate: {year: 1988, month: 3, day: 7}, mobileNumber: "0712345679"}
-];
-
 type ErrorDetails record {
     string message;
     string detail;
@@ -37,6 +32,17 @@ type NewUser record {|
     string name;
     time:Date birthDate;
     string mobileNumber;
+|};
+
+public type NewPost record {|
+    string description;
+    string tags;
+    string category;
+|};
+
+type PostForbidden record {|
+    *http:Forbidden;
+    ErrorDetails body;
 |};
 
 configurable string host = ?;
@@ -75,6 +81,29 @@ service /social\-media on new http:Listener(9095) {
         _ = check socialMediaDb->execute(`
             INSERT INTO users(birth_date, name, mobile_number)
             VALUES (${newUser.birthDate}, ${newUser.name}, ${newUser.mobileNumber});`);
+        return http:CREATED;
+    }
+
+    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|error {
+        User|error user = socialMediaDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
+        if user is sql:NoRowsError {
+            ErrorDetails errorDetails = {
+                message: "User not found",
+                detail: "User not found in the system",
+                timestamp: time:utcNow()
+            };
+            UserNotFound userNotFound = {
+                body: errorDetails
+            };
+            return userNotFound;
+        }
+        if user is error {
+            return user;
+        }
+
+        _ = check socialMediaDb->execute(`
+            INSERT INTO posts(description, category, created_time_stamp, tags, user_id)
+            VALUES (${newPost.description}, ${newPost.category}, CURRENT_TIMESTAMP(), ${newPost.tags}, ${id});`);
         return http:CREATED;
     }
 }
