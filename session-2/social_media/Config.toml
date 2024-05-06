@@ -1,0 +1,11 @@
+# Configuration file for "social_media"
+# How to use see:
+# https://ballerina.io/learn/provide-values-to-configurable-variables/#provide-via-toml-syntax
+
+host = "localhost"
+user = "social_media_user"
+password = "dummypassword"
+database = "social_media_database"
+port = 3306
+
+
