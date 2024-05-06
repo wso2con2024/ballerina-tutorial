@@ -1,57 +1,80 @@
 diff --git a/session-3/backend/reviewed/Ballerina.toml b/session-3/backend/reviewed/Ballerina.toml
-index abc5853..145ca57 100644
+index abc5853..246a7b9 100644
 --- a/session-3/backend/reviewed/Ballerina.toml
 +++ b/session-3/backend/reviewed/Ballerina.toml
-@@ -15,6 +15,6 @@ version = "1.2.1"
+@@ -14,7 +14,7 @@ artifactId = "persist.sql-native"
+ version = "1.2.1"
  
  [[dependency]]
- org = "maryamzi"
+-org = "maryamzi"
 -name = "city_data_client"
-+name = "city_client"
++org = "maryam"
++name = "city_data"
  version = "0.1.0"
  repository = "local"
 diff --git a/session-3/backend/reviewed/Dependencies.toml b/session-3/backend/reviewed/Dependencies.toml
-index c38f766..23ed25b 100644
+index 135c2f1..859cc28 100644
 --- a/session-3/backend/reviewed/Dependencies.toml
 +++ b/session-3/backend/reviewed/Dependencies.toml
-@@ -450,7 +450,7 @@ dependencies = [
+@@ -437,6 +437,20 @@ modules = [
+ 	{org = "ballerinax", packageName = "persist.sql", moduleName = "persist.sql"}
+ ]
+ 
++[[package]]
++org = "maryam"
++name = "city_data"
++version = "0.1.0"
++dependencies = [
++	{org = "ballerina", name = "http"},
++	{org = "ballerina", name = "io"},
++	{org = "ballerina", name = "url"},
++	{org = "ballerinai", name = "observe"}
++]
++modules = [
++	{org = "maryam", packageName = "city_data", moduleName = "city_data"}
++]
++
+ [[package]]
+ org = "maryam"
+ name = "reviewed"
+@@ -454,7 +468,7 @@ dependencies = [
  	{org = "ballerinax", name = "mysql"},
  	{org = "ballerinax", name = "mysql.driver"},
  	{org = "ballerinax", name = "persist.sql"},
 -	{org = "maryamzi", name = "city_data_client"},
-+	{org = "maryamzi", name = "city_client"},
++	{org = "maryam", name = "city_data"},
  	{org = "xlibb", name = "pubsub"}
  ]
  modules = [
-@@ -460,14 +460,16 @@ modules = [
+@@ -462,18 +476,6 @@ modules = [
+ 	{org = "maryam", packageName = "reviewed", moduleName = "reviewed.db"}
+ ]
  
- [[package]]
- org = "maryamzi"
+-[[package]]
+-org = "maryamzi"
 -name = "city_data_client"
-+name = "city_client"
- version = "0.1.0"
- dependencies = [
- 	{org = "ballerina", name = "http"},
-+	{org = "ballerina", name = "io"},
-+	{org = "ballerina", name = "url"},
- 	{org = "ballerinai", name = "observe"}
- ]
- modules = [
+-version = "0.1.0"
+-dependencies = [
+-	{org = "ballerina", name = "http"},
+-	{org = "ballerinai", name = "observe"}
+-]
+-modules = [
 -	{org = "maryamzi", packageName = "city_data_client", moduleName = "city_data_client"}
-+	{org = "maryamzi", packageName = "city_client", moduleName = "city_client"}
- ]
- 
+-]
+-
  [[package]]
+ org = "xlibb"
+ name = "pipe"
 diff --git a/session-3/backend/reviewed/service.bal b/session-3/backend/reviewed/service.bal
-index 266eb2f..b63e8f4 100644
+index 3fd721d..1fa64dc 100644
 --- a/session-3/backend/reviewed/service.bal
 +++ b/session-3/backend/reviewed/service.bal
-@@ -7,7 +7,7 @@ import ballerina/log;
+@@ -8,7 +8,7 @@ import ballerina/log;
  
  import xlibb/pubsub;
  
 -import maryamzi/city_data_client;
-+import maryamzi/city_client;
++import maryam/city_data;
  
  const USER_ID = "userId";
  
@@ -60,25 +83,27 @@ index 266eb2f..b63e8f4 100644
  }
  
 -final city_data_client:Client geoClient = check getGeoClient();
-+final city_client:Client geoClient = check getGeoClient();
++final city_data:Client geoClient = check getGeoClient();
  
 -function getGeoClient() returns city_data_client:Client|error => new ();
-+function getGeoClient() returns city_client:Client|error => new ();
++function getGeoClient() returns city_data:Client|error => new ();
  
  final db:Client db = check new;
  
-@@ -109,7 +109,8 @@ type CityDataResultsItem record {
+@@ -107,7 +107,10 @@ type CityDataResultsItem record {
  
  isolated function getCityData(string city, string country) returns CityDataResultsItem|error {
      log:printInfo("Retrieving city data", city = city, country = country);
 -    return geoClient->getCityData(city, country);
-+    city_client:CityData result = check geoClient->/geonames\-all\-cities\-with\-a\-population\-500/records([string `name:${city}`, string `country:${country}`]);
-+    return result.results[0];
++    city_data:CityData cityData = check geoClient->/geonames\-all\-cities\-with\-a\-population\-500/records(
++        refine = [string `name:${city}`, string `country:${country}`]
++    );
++    return cityData.results[0];
  }
  
  type Place distinct service object {
 diff --git a/session-3/backend/reviewed/tests/tests.bal b/session-3/backend/reviewed/tests/tests.bal
-index f418cc7..27109d4 100644
+index f418cc7..fc83b23 100644
 --- a/session-3/backend/reviewed/tests/tests.bal
 +++ b/session-3/backend/reviewed/tests/tests.bal
 @@ -1,7 +1,7 @@
@@ -86,7 +111,7 @@ index f418cc7..27109d4 100644
  import ballerina/test;
  
 -import maryamzi/city_data_client;
-+import maryamzi/city_client;
++import maryam/city_data;
  
  final graphql:Client cl = check new ("https://localhost:9000/reviewed",
      secureSocket = {
@@ -95,70 +120,30 @@ index f418cc7..27109d4 100644
      functionName: "getGeoClient"
  }
 -function getMockClient() returns city_data_client:Client => test:mock(city_data_client:Client);
-+function getMockClient() returns city_client:Client => test:mock(city_client:Client);
++function getMockClient() returns city_data:Client => test:mock(city_data:Client);
  
  @test:Config
  function testRetrievingBasicPlaceData() returns error? {
-@@ -49,33 +49,38 @@ type CityDataWithPopulationAndTimeZone record {|
+@@ -49,7 +49,7 @@ type CityDataWithPopulationAndTimeZone record {|
  
  @test:Config
  function testRetrievingPlaceDataWithCityData() returns error? {
 -    city_data_client:CityDataResultsItem cityData = {
--        population: 450000,
--        timezone: "America/New_York",
--        admin1_code: "",
--        elevation: "",
--        country: "",
--        latitude: "",
--        coordinates: {lon: 0, lat: 0},
--        country_code_2: (),
--        dem: 0,
--        admin4_code: (),
--        geoname_id: "",
--        alternate_names: [],
--        country_code: "",
--        feature_class: "",
--        ascii_name: "",
--        admin2_code: "",
--        modification_date: "",
--        name: "",
--        admin3_code: (),
--        feature_code: "",
--        longitude: ""
-+    city_client:CityData cityData = {
-+        total_count: 1,
-+        results: [
-+            {
-+                population: 450000,
-+                timezone: "America/New_York",
-+                admin1_code: "",
-+                elevation: "",
-+                country: "",
-+                latitude: "",
-+                coordinates: {lon: 0, lat: 0},
-+                country_code_2: (),
-+                dem: 0,
-+                admin4_code: (),
-+                geoname_id: "",
-+                alternate_names: [],
-+                country_code: "",
-+                feature_class: "",
-+                ascii_name: "",
-+                admin2_code: "",
-+                modification_date: "",
-+                name: "",
-+                admin3_code: (),
-+                feature_code: "",
-+                longitude: ""
-+            }
-+        ]
++    city_data:ResultsItem cityData = {
+         population: 450000,
+         timezone: "America/New_York",
+         admin1_code: "",
+@@ -74,9 +74,10 @@ function testRetrievingPlaceDataWithCityData() returns error? {
      };
  
      test:prepare(geoClient)
 -        .when("getCityData")
 -        .withArguments("Miami", "United States")
+-        .thenReturn(cityData);
 +        .whenResource("geonames-all-cities-with-a-population-500/records")
-+        .withArguments(<string[]> ["name:Miami", "country:United States"])
-         .thenReturn(cityData);
++        .withArguments(<map<string|string[]>> {}, 
++                       <city_data:GetGeonamesAllCitiesWithAPopulation500RecordsQueries> {refine: ["name:Miami", "country:United States"]})
++        .thenReturn(<city_data:CityData> {total_count: 1, results: [cityData]});
  
      json payload = check cl->execute(string `query QueryPlace($placeId: ID!) {
+         place(placeId: $placeId) {
