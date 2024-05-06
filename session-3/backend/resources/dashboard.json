@@ -65,7 +65,7 @@
       }
     ]
   },
-  "description": "Monitor Ballerina HTTP/HTTPs Services, HTTP Clients and SQL Clients",
+  "description": "Monitor Ballerina HTTP/HTTPs Services, GraphQL Services, HTTP Clients, and SQL Clients",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "gnetId": 5841,
