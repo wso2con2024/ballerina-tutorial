@@ -63,25 +63,12 @@ service / on new http:Listener(9090) {
         string ref = uuid:createType1AsString();
         do {
             // Get the order from the db
-            OrderWithRelations data = check dbClient->/orders/[id]();
-
-            GetOrderedItemWithRelations[] list = from var item in data.items
-                let GetOrderedItemWithRelations itemData = check dbClient->/ordereditems/[data.orderID]/[item.itemId]()
-                select itemData;
-
+            
             // Transform the db entity to the response
-            return transformOrder(data, list);
         } on fail var err {
             // Error handling
             // Return 404 if the order is not found
-            if err is persist:NotFoundError {
-                http:NotFound notFound = {
-                    body: {message: "Order not found", code: id}
-                };
-                // Log the incoming request for later analysis
-                log:printError("Order Not Found", err, code = ref, id = id);
-                return notFound;
-            }
+            
             // Return 500 if an internal server error occurs
             http:InternalServerError internalError = {
                 body: {message: "Internal server error", code: ref}
