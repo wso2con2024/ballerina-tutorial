@@ -168,8 +168,8 @@ distinct service class PlaceWithFreeEntrance {
     resource function get country() returns string => self.country;
 
     isolated function cityDataPreLoader(graphql:Context ctx) {
-        dataloader:DataLoader bookLoader = ctx.getDataLoader("cityDataLoader");
-        bookLoader.add([self.city, self.country]);
+        dataloader:DataLoader cityDataLoader = ctx.getDataLoader("cityDataLoader");
+        cityDataLoader.add([self.city, self.country]);
     }
 
     @graphql:ResourceConfig {
@@ -234,8 +234,8 @@ distinct service class PlaceWithEntranceFee {
     resource function get country() returns string => self.country;
 
     isolated function cityDataPreLoader(graphql:Context ctx) {
-        dataloader:DataLoader bookLoader = ctx.getDataLoader("cityDataLoader");
-        bookLoader.add([self.city, self.country]);
+        dataloader:DataLoader cityDataLoader = ctx.getDataLoader("cityDataLoader");
+        cityDataLoader.add([self.city, self.country]);
     }
 
     @graphql:ResourceConfig {
