@@ -2,6 +2,10 @@
 
 This session is about the basics of handling data in Ballerina. The following topics are covered in this session.
 
+## Git Repository
+
+https://github.com/wso2con2024/ballerina-tutorial
+
 - Example 1: Introduction to plain data.
   Code located in folder `session-4/plain_data/`
 
