@@ -14,6 +14,10 @@ public function main() returns error? {
 
     Person person = check xmldata:parseAsType(x);
     io:println(person);
+
+    stream<io:Block, io:Error?> streamResult = check io:fileReadBlocksAsStream("18_data.xml");
+    Person person2 = check xmldata:parseStream(streamResult);
+    io:println(person2);
 }
 
 // Generated from the XML value above.
