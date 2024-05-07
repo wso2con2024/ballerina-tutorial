@@ -1,0 +1,8 @@
+[package]
+org = "anupama"
+name = "rest_api_with_data_mapper"
+version = "0.1.0"
+distribution = "2201.9.0"
+
+[build-options]
+observabilityIncluded = true
