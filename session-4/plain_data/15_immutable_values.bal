@@ -22,8 +22,8 @@ public function main() returns error? {
 
     ImmutablePerson ip2 = {name: "Jane", age: 30, address: {street: "B Street", city: "B City"}};
 
-    // imutablePerson.name = "Doe"; // Compilation error
-    // ImmutablePerson ip1 = person; // Compilation error
+    // ip1.name = "Doe"; // Compilation error
+    // ImmutablePerson ip3 = person; // Compilation error
 
     // ImmutablePerson is a subtype of Person
     person = ip1;

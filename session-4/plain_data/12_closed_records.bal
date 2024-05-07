@@ -15,7 +15,7 @@ public function main() {
 
     Student student = {firstName: "John", lastName: "Doe", age: 30, year: "2nd year"};
 
-    // person1["city"] = "Hollywood"; // Compile error
+    // student["city"] = "Hollywood"; // Compile error
 
     Person person1 = {firstName: "John", lastName: "Doe", age: 30};
     person1["city"] = "Hollywood"; // No compile error
