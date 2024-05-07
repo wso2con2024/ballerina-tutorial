@@ -7,9 +7,3 @@ This session is about the basics of handling data in Ballerina. The following to
 
 - Example 2: Building a simple order service with Ballerina persistence.
   Code located infolder `session-4/order_mgt/`
-
-- Example 3: Ballerina EDI tool demostartion.
-  Code located in folder `session-4/edi/`
-
-- Example 4: Ballerina Bindgen tool demostartion.
-  Code located in folder `session-4/handlebars/`
