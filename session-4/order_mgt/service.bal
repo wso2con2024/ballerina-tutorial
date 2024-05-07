@@ -14,7 +14,7 @@ service / on new http:Listener(9090) {
             
             // Send the response
             return {code: ref};
-        } on fail error err {
+        } on fail var err {
             // Error handling
             http:BadRequest badRequest = {
                 body: {message: "Invalid request", code: ref}

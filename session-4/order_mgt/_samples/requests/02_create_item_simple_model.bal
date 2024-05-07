@@ -14,7 +14,7 @@ type SimpleManufacturer record {|
 |};
 
 type SimpleStock record {|
-    int quantity;
+    decimal quantity;
     SimplePrice price;
 |};
 
