@@ -219,7 +219,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -299,7 +300,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -380,7 +382,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -460,7 +463,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -500,7 +504,8 @@
                 "type": "prometheus",
                 "uid": "${DS_PROMETHEUS}"
               },
-              "expr": "((sum(max_over_time(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\",http_status_code_group=\"4xx\"}[1m])\n-\n  min_over_time(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\",http_status_code_group=\"4xx\"}[1m])) OR vector(0))\n+\n(sum(max_over_time(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\",http_status_code_group=\"5xx\"}[1m]) \n-    min_over_time(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\",http_status_code_group=\"5xx\"}[1m])) OR vector(0)))\n*100\n/\nsum(max_over_time(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\"}[1m]) - min_over_time(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\"}[1m]))\n",
+              "editorMode": "code",
+              "expr": "((sum(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\",http_status_code_group=\"4xx\"}) OR vector(0))\n+\n(sum(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\",http_status_code_group=\"5xx\"}) OR vector(0)))\n*100\n/\nsum(requests_total_value{instance=~\"$instance\",src_object_name=\"ballerina/http/Caller\"})\n",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -993,7 +998,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1073,7 +1079,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1153,7 +1160,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1233,7 +1241,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1273,7 +1282,8 @@
                 "type": "prometheus",
                 "uid": "${DS_PROMETHEUS}"
               },
-              "expr": "((sum( max_over_time({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\",http_status_code_group=\"4xx\"}[1m]) - min_over_time({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\",http_status_code_group=\"4xx\"}[1m])) OR vector(0)) + ((sum(max_over_time({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\",http_status_code_group=\"5xx\"}[1m]) - min_over_time({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\",http_status_code_group=\"5xx\"}[1m])) OR  vector(0) )))*100 / sum( max_over_time({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\"}[1m]) - min_over_time({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\"}[1m]))\n",
+              "editorMode": "code",
+              "expr": "((sum({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\",http_status_code_group=\"4xx\"}) OR vector(0)) + (sum({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\",http_status_code_group=\"5xx\"}) OR  vector(0)))*100 / sum({__name__=~\"requests_total_value\", instance=~\"$instance\", src_function_name=~\"$src_function_name\",src_object_name=\"ballerina/http/HttpClient\"})\n",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -1772,7 +1782,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1788,7 +1799,7 @@
             "h": 4,
             "w": 6,
             "x": 0,
-            "y": 29
+            "y": 7
           },
           "id": 85,
           "links": [],
@@ -1852,7 +1863,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1868,7 +1880,7 @@
             "h": 4,
             "w": 6,
             "x": 6,
-            "y": 29
+            "y": 7
           },
           "id": 86,
           "links": [],
@@ -1932,7 +1944,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1948,7 +1961,7 @@
             "h": 4,
             "w": 6,
             "x": 12,
-            "y": 29
+            "y": 7
           },
           "id": 87,
           "links": [],
@@ -2012,7 +2025,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2028,7 +2042,7 @@
             "h": 4,
             "w": 6,
             "x": 18,
-            "y": 29
+            "y": 7
           },
           "id": 88,
           "links": [],
@@ -2052,7 +2066,8 @@
                 "type": "prometheus",
                 "uid": "${DS_PROMETHEUS}"
               },
-              "expr": "sum (max_over_time(requests_total_value{instance=~\"$instance\",src_function_name=~\"$db_action\",src_object_name=\"ballerinax/mysql/Client\",error=\"true\"}[1m]) - min_over_time(requests_total_value{instance=~\"$instance\",src_function_name=~\"$db_action\",src_object_name=\"ballerinax/mysql/Client\",error=\"true\"}[1m]))*100/sum(max_over_time(requests_total_value{instance=~\"$instance\",src_function_name=~\"$db_action\",src_object_name=\"ballerinax/mysql/Client\"}[1m]) - min_over_time(requests_total_value{instance=~\"$instance\",src_function_name=~\"$db_action\",src_object_name=\"ballerinax/mysql/Client\"}[1m]))",
+              "editorMode": "code",
+              "expr": "sum(requests_total_value{instance=~\"$instance\",src_function_name=~\"$db_action\",src_object_name=\"ballerinax/mysql/Client\",error=\"true\"}) * 100 / sum(requests_total_value{instance=~\"$instance\",src_function_name=~\"$db_action\",src_object_name=\"ballerinax/mysql/Client\"})",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -2081,7 +2096,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 33
+            "y": 11
           },
           "hiddenSeries": false,
           "id": 66,
@@ -2175,7 +2190,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 33
+            "y": 11
           },
           "hiddenSeries": false,
           "id": 68,
@@ -2268,7 +2283,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 42
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 89,
@@ -2361,7 +2376,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 42
+            "y": 20
           },
           "hiddenSeries": false,
           "id": 90,
@@ -2783,7 +2798,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "(sum( max_over_time(requests_total_value{entrypoint_service_name=\"graphql:Document\", graphql_service_errors=~\"graphql_service_execution_error|graphql_service_validation_error|graphql_service_parsing_error\"}[1m]) - min_over_time(requests_total_value{entrypoint_service_name=\"graphql:Document\", graphql_service_errors=~\"graphql_service_execution_error|graphql_service_validation_error|graphql_service_parsing_error\"}[1m])) OR vector(0)) * 100 / \n(sum(max_over_time(requests_total_value{entrypoint_service_name=\"graphql:Document\", entrypoint_function_name=\"execution\", src_resource_accessor=~\"query|mutation|subscription\"}[1m]) - min_over_time(requests_total_value{entrypoint_service_name=\"graphql:Document\", entrypoint_function_name=\"execution\", src_resource_accessor=~\"query|mutation|subscription\"}[1m])) OR vector(0))",
+          "expr": "(sum(requests_total_value{entrypoint_service_name=\"graphql:Document\", graphql_service_errors=~\"graphql_service_execution_error|graphql_service_validation_error|graphql_service_parsing_error\"}) OR vector(0)) * 100 / \n(sum(requests_total_value{entrypoint_service_name=\"graphql:Document\", entrypoint_function_name=\"execution\", src_resource_accessor=~\"query|mutation|subscription\"}) OR vector(100))",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -3136,7 +3151,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "topk(10, sum by (graphql_service_field_name) (requests_total_value{graphql_service_field_name=~\"$graphql_service_field_name\"}))",
+          "expr": "topk(10, sum by (graphql_service_field_name, instance) (requests_total_value{graphql_service_field_name=~\"$graphql_service_field_name\"}))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -3737,6 +3752,6 @@
   "timezone": "",
   "title": "Ballerina Metrics",
   "uid": "8FPN-nmikq",
-  "version": 19,
+  "version": 23,
   "weekStart": ""
 }
