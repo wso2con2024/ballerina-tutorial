@@ -9,6 +9,8 @@
 
 These areas will be covered via an implementation of a GraphQL backend in Ballerina, for `Reviewed!`, a platform to review places.
 
+A sample frontend implementation is also available at [frontend](./frontend/).
+
 ## Backend implementation for `Reviewed!`
 
 `Reviewed!` let's you 
